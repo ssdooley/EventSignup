@@ -1,0 +1,124 @@
+@import '~@angular/material/_theming.scss';
+@import 'material-prism.scss';
+@include mat-core();
+
+$default-theme: mat-dark-theme(mat-palette($mat-green), mat-palette($mat-red));
+@include angular-material-theme($default-theme);
+
+html, body, app {
+    overflow: hidden;
+}
+
+html, body, app, .app-frame {
+    margin: 0;
+    height: 100%;
+}
+
+.fixed-toolbar {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+
+.sticky-overlay {
+    margin-top: 50px;
+}
+
+.mat-typography h1, 
+.mat-typography h2, 
+.mat-typography h3, 
+.mat-typography h4, 
+.mat-typography h5, 
+.mat-typography h6, 
+.mat-typography p,
+md-card.mat-card,
+p.mat-caption,
+md-input-container {
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+md-card.mat-card {
+    margin-bottom: 20px;
+}
+
+a.active {
+    font-weight: bold;
+}
+
+md-sidenav-container {
+    height: 100%;
+    margin-top: 64px;
+    padding-bottom: 64px;
+}
+
+md-sidenav.mat-sidenav {
+    padding-bottom: 64px;
+}
+
+md-sidenav.mat-sidenav, div.app-body {
+    overflow: auto;
+}
+
+md-nav-list.mat-nav-list .mat-subheader {
+    margin: 0;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.green-app {
+    background-color: black;
+    $green-app-primary: mat-palette($mat-green, A400);
+    $green-app-accent: mat-palette($mat-light-blue, A400);
+    $green-dark: mat-dark-theme($green-app-primary, $green-app-accent);
+    @include angular-material-theme($green-dark);    
+}
+
+.green-app code.snippet,
+.green-app .app-body a.link,
+.green-app .app-body a.link:visited,
+.green-app a.active div.mat-list-item-content,
+.green-app .md-option.mat-selected.map-primary,
+.green-app .mat-primary .mat-option.mat-selected {
+    color: map-get($mat-green, A400);
+}
+
+.red-app {
+    background-color: black;
+    $red-app-primary: mat-palette($mat-red);
+    $red-app-accent: mat-palette($mat-blue);
+    $red-app-warn: mat-palette($mat-deep-orange);
+    $red-dark: mat-dark-theme($red-app-primary, $red-app-accent, $red-app-warn);
+    @include angular-material-theme($red-dark);
+}
+
+.red-app code.snippet,
+.red-app .app-body a.link,
+.red-app .app-body a.link:visited,
+.red-app a.active div.mat-list-item-content,
+.red-app .md-option.mat-selected.map-primary,
+.red-app .mat-primary .mat-option.mat-selected {
+    color: map-get($mat-red, 400);
+}
+
+.blue-app {
+    background-color: black;
+    $blue-app-primary: mat-palette($mat-light-blue, A400);
+    $blue-app-accent: mat-palette($mat-yellow);
+    $blue-dark: mat-dark-theme($blue-app-primary, $blue-app-accent);
+    @include angular-material-theme($blue-dark);
+}
+
+.blue-app code.snippet,
+.blue-app .app-body a.link,
+.blue-app .app-body a.link:visited,
+.blue-app a.active div.mat-list-item-content,
+.blue-app .md-option.mat-selected.map-primary,
+.blue-app .mat-primary .mat-option.mat-selected {
+    color: map-get($mat-light-blue, A400);
+}
+
+div.cdk-overlay-container {
+    background-color: transparent;
+}

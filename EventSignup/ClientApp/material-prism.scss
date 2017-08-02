@@ -1,0 +1,165 @@
+code {
+    font-family: Consolas, "Lucida Console", Monaco, monospace;
+}
+
+prism {
+    background-color: #1E1E1E;
+    display: flex;
+    color: #D4D4D4;
+    box-sizing: border;
+    padding: 24px;
+    margin: 0;
+}
+
+prism.card-snippet {
+    display: block;
+    padding: 10px 24px;
+    margin: 0;
+}
+
+code.block {
+    padding: 0;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+    line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment {
+    color: #608b4e;
+}
+
+.token.class-name {
+    color: #4bc9b0;
+}
+
+.token.number {
+    color: #b5cea8;
+}
+
+.token.regex {
+    color: #d16969;
+}
+
+.token.tag {
+    color: #569cd6;
+}
+
+.token.selector {
+    color: #d7ba7d;
+}
+
+.token.inserted {
+    color: #b5cea8;
+}
+
+.token.deleted {
+    color: #ce9178;
+}
+
+.token.punctuation {
+    color: #808080;
+}
+
+.token.string,
+.language-css .token.string,
+.style .token.string,
+.token.attr-value {
+    color: #ce9178;
+}
+
+.token.attr-name,
+.token.char,
+.token.builtin,
+.token.property,
+.token.variable,
+.token.token.atrule,
+.token.important {
+    color: #9cdcfe;
+}
+
+.token.keyword,
+.token.boolean,
+.token.constant,
+.token.symbol {
+    color: #569cd6;
+}
+
+.token.operator,
+.token.entity {
+    color: #d4d4d4;
+}
+
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #608b4e;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.url {
+	color: #a67f59;
+}
+
+.token.function {
+	color: #DCDCAA;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+prism pre,
+prism pre code {
+    background-color: #1E1E1E;
+}
