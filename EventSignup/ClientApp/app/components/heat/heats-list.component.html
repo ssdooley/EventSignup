@@ -1,0 +1,10 @@
+﻿<div class="heat-list">
+    <div class="heat-list" *ngFor="let structuredHeat of structuredHeats">{{structuredHeat[1] | date: 'yMMMd'}}
+        <div *ngFor="let heat of structuredHeat[0]">
+            <div class="heat-list">{{heat.name}}  Heat</div>
+            <div class="heat-list">{{heat.date | date: 'jm'}}</div>
+            <div class="heat-list">{{heat.slots}}</div>
+            <br />
+        </div>
+    </div>
+</div>

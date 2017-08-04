@@ -1,13 +1,12 @@
 <div [ngClass]="materialTheme.id" class="app-frame">  
   <md-toolbar color="primary" class="fixed-toolbar">
     <button md-button (click)="sidenav.open()"><md-icon>menu</md-icon> Menu</button>
-    <span class="toolbar-header">ASP.NET Core Angular Material</span>
+    <span class="toolbar-header">Event SignUp</span>
     <span class="example-spacer"></span>
     <button md-button [mdMenuTriggerFor]="themeMenu">Theme</button>
     <md-menu #themeMenu="mdMenu" class="sticky-overlay">
       <button md-menu-item *ngFor="let theme of themes" (click)="setTheme(theme)">{{theme.display}}</button>
     </md-menu>
-    <a md-button href="https://github.com/JaimeStill/AspNetCoreMaterial" target="_blank">GitHub</a>
   </md-toolbar>
   <md-sidenav-container class="mat-typography">
     <md-sidenav #sidenav>
