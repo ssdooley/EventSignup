@@ -22,5 +22,11 @@ namespace EventSignup.Web.Controllers
         {
             return await db.GetPeople();
         }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<PersonModel>> GetAllPeople()
+        {
+            return await db.GetAllPeople();
+        }
     }
 }

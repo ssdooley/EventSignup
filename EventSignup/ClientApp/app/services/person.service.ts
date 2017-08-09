@@ -5,38 +5,50 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Heat } from '../models/heat.model';
+import { Person } from '../models/person.model';
 import { ToastrService } from './toastr.service';
 
 @Injectable()
-export class HeatService {
-    heatsSubject: BehaviorSubject<Heat[]> = new BehaviorSubject<Array<Heat>>([]);
-    get heatData(): Heat[] {
-        return this.heatsSubject.value;
+export class PersonService {
+    peopleSubject: BehaviorSubject<Person[]> = new BehaviorSubject<Array<Person>>([]);
+    get personData(): Person[] {
+        return this.peopleSubject.value;
     }
 
     constructor(private http: Http, private toastrService: ToastrService) { }
 
-    private heatSubject = new Subject<Heat>();
-    private newHeatSubject = new Subject<Heat>();
+    private personSubject = new Subject<Person>();
+    private newPersonSubject = new Subject<Person>();
 
-    heats = this.heatsSubject.asObservable();
-    heat = this.heatSubject.asObservable();
-    newHeat = this.newHeatSubject.asObservable();
+    person = this.personSubject.asObservable();
+    people = this.peopleSubject.asObservable();
+    newPerson = this.newPersonSubject.asObservable();
 
-    setHeat(heat: Heat): void {
-        this.heatSubject.next(heat);
+    setPerson(person: Person): void {
+        this.personSubject.next(person);
     }
 
-    getHeats(): void {
-        this.http.get('/api/Heat/GetHeats')
+    getPeople(): void {
+        this.http.get('api/Person/GetPeople')
             .map(this.extractData)
             .catch(this.handleError)
-            .subscribe(heats => {
-                this.heatsSubject.next(heats);
+            .subscribe(people => {
+                this.peopleSubject.next(people);
             },
             error => {
-                this.toastrService.alertDanger(error, "Get Heats Error");
+                this.toastrService.alertDanger(error, "Get People Error");
+            });
+    }
+
+    getAllPeople(): void {
+        this.http.get('api/Person/GetAllPeople')
+            .map(this.extractData)
+            .catch(this.handleError)
+            .subscribe(people => {
+                this.peopleSubject.next(people);
+            },
+            error => {
+                this.toastrService.alertDanger(error, "Get All People Error");
             });
     }
 

@@ -15,6 +15,9 @@ import { HeatService } from './services/heat.service';
 import { HeatsComponent } from './components/heat/heats.component';
 import { HeatsListComponent } from './components/heat/heats-list.component';
 
+import { PersonService } from './services/person.service';
+import { PeopleListComponent } from './components/person/person-list.component';
+
 
 export const sharedConfig: NgModule = {
     bootstrap: [ AppComponent ],
@@ -23,18 +26,21 @@ export const sharedConfig: NgModule = {
         HomeComponent,
         PrismComponent,
         HeatsComponent,
-        HeatsListComponent
+        HeatsListComponent,
+        PeopleListComponent
     ],
     providers: [
         ThemeService,
         ToastrService,
-        HeatService
+        HeatService,
+        PersonService,
     ],
     imports: [
         AppMaterialModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'people-list', component: PeopleListComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

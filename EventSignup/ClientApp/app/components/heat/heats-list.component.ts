@@ -1,39 +1,48 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { MdPaginator, MdSort } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { Heat } from '../../models/heat.model';
 import { HeatService } from '../../services/heat.service';
+import { PersonService } from '../../services/person.service';
+import { PersonHeatDataSource } from '../../datasources/person-heat.datasource';
+
 
 @Component({
     selector: 'heats-list',
     templateUrl: 'heats-list.component.html',
-    styleUrls: ['heats-list.component.css']
+    styleUrls: ['heats-list.component.css'],
+    providers: [PersonService]
 })
-export class HeatsListComponent {
+export class HeatsListComponent implements AfterViewInit {
     heats: Array<Heat> = new Array<Heat>();
-    dates: Array<Date> = new Array<Date>();
-    structuredHeats: [Array<Heat>, Date][] = new Array<[Array<Heat>, Date]>();
+    displayedColumns = ['firstName', 'lastName', 'email', 'sex', 'rxEvent']
+    dataSource: PersonHeatDataSource | null;
+    @ViewChild(MdSort) sort: MdSort;
+    @ViewChild(MdPaginator) paginator: MdPaginator;
+    @ViewChild('filter') filter: ElementRef;
 
-    constructor(private heatService: HeatService) {
-        heatService.heats.subscribe(heats => {
-            this.heats = heats;
-            this.dates = heats.map((heat) => {
-                if (this.dates.indexOf(heat.date) < 0) {
-                    return heat.date;
-                }
-            });
 
-            let structure = this.structuredHeats;
-
-            for (var i = 0; i < this.dates.length; i++) {
-                let dateHeats = heats.map((heat) => {
-                    if (heat.date === this.dates[i]) {
-                        return heat;
-                    }
+    constructor(private personService: PersonService,
+                private heatService: HeatService) {
+                    heatService.heats.subscribe(heats => {
+                    this.heats = heats;
                 });
+    }
 
-                structure.push([dateHeats, this.dates[i]]);
-            }
+    ngAfterViewInit() {
+        this.heatService.getHeats();
+        this.dataSource = new PersonHeatDataSource(this.personService, this.paginator, this.sort);
 
-            this.structuredHeats = structure;
-        });
+        Observable.fromEvent(this.filter.nativeElement, 'keyup')
+            .debounceTime(150)
+            .distinctUntilChanged()
+            .subscribe(() => {
+                if (!this.dataSource) { return; }
+                this.dataSource.filter = this.filter.nativeElement.value;
+            });
     }
 }

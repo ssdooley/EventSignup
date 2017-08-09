@@ -14,17 +14,27 @@ namespace EventSignup.Web.Models.Extensions
         {
             return Task.Run(() =>
             {
-                var model = db.Heats.Include(x => x.Slots).Select(x => new HeatModel
+                var model = db.Heats.Include("PeopleHeats.Person").Select(x => new HeatModel
                 {
                     id = x.Id,
                     date = x.Date,
                     name = x.Name,
                     time = x.Time,
-                    slots = x.Slots.Select(y => new SlotModel
+                    slots = x.Slots,
+                    peopleHeats = x.PeopleHeats.Select(y => new PersonHeatModel
                     {
-                        id = y.Id,
-                        numHeats = y.NumHeats
+                        id = y.PersonId,
+                        rxEvent = y.RxEvent,
+                        person = new PersonModel
+                        {
+                            firstName = y.Person.FirstName,
+                            lastName = y.Person.LastName,
+                            userName = y.Person.Username,
+                            sex = y.Person.Sex,
+                            email = y.Person.Email
+                        }
                     }).AsEnumerable()
+
                 });
 
                 return model.AsEnumerable();

@@ -10,7 +10,8 @@ namespace EventSignup.Data
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public DateTime Time { get; set; }
-
-        public virtual ICollection<Slot> Slots { get; set; }
+        public int Slots { get; set; }
+        
+        public virtual ICollection<PersonHeat> PeopleHeats { get; set; }
     }
 }

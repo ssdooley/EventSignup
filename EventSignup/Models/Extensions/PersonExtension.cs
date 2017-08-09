@@ -21,7 +21,7 @@ namespace EventSignup.Web.Models.Extensions
                     firstName = x.FirstName,
                     lastName = x.LastName,
                     sex = x.Sex,
-                    username = x.Username,
+                    userName = x.Username,
                     email = x.Email,
                     peopleHeats = x.PeopleHeats.Select(y => new PersonHeatModel
                     {
@@ -33,13 +33,11 @@ namespace EventSignup.Web.Models.Extensions
                             date = y.Heat.Date,
                             name = y.Heat.Name,
                             time = y.Heat.Time,
-                            slots = y.Heat.Slots.Select(z => new SlotModel
-                            {
-                                id = z.Id,
-                                numHeats = z.NumHeats
-                            }).AsEnumerable()
+                            slots = y.Heat.Slots
                         }
+
                     }).AsEnumerable()
+
                 });
 
                 return model.AsEnumerable();
@@ -56,7 +54,25 @@ namespace EventSignup.Web.Models.Extensions
                     firstName = x.FirstName,
                     lastName = x.LastName,
                     sex = x.Sex,
-                    username = x.Username,
+                    userName = x.Username,
+                    email = x.Email
+                });
+
+                return model.AsEnumerable();
+            });
+        }
+
+        public static Task<IEnumerable<PersonModel>> GetAllPeople(this AppDbContext db)
+        {
+            return Task.Run(() =>
+            {
+                var model = db.People.Select(x => new PersonModel
+                {
+                    id = x.Id,
+                    firstName = x.FirstName,
+                    lastName = x.LastName,
+                    sex = x.Sex,
+                    userName = x.Username,
                     email = x.Email
                 });
 

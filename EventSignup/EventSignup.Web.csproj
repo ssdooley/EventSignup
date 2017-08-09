@@ -29,7 +29,7 @@
     <ProjectReference Include="..\EventSignup.Data\EventSignup.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ClientApp\app\components\person\" />
+    <Folder Include="ClientApp\app\components\app\NewFolder\" />
   </ItemGroup>
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
