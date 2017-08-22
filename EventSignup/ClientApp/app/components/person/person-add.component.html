@@ -1,0 +1,23 @@
+﻿<md-toolbar color="primary">Register for Heat</md-toolbar>
+<md-card class="styled-card">
+    <md-card-content>
+        <section>
+            <md-input-container>
+                <input mdInput [(ngModel)]="person.firstName" placeholder="First" />
+            </md-input-container>
+            <md-input-container>
+                <input mdInput [(ngModel)]="person.lastName" placeholder="Last" />
+            </md-input-container>
+            <md-input-container>
+                <input mdInput [(ngModel)]="person.userName" placeholder="Username" />
+            </md-input-container>
+            <md-select placeholder="Gender" [(ngModel)]="person.sex">
+                <md-option *ngFor="let sex of sexes" [value]="sex">{{sex}}</md-option>
+            </md-select>
+            <md-input-container>
+                <input mdInput [(ngModel)]="person.email" placeholder="Email" />
+            </md-input-container>
+        </section>
+        <button class="styled-button" md-raised-button color="primary" (click)="addPerson()">Register</button>
+    </md-card-content>
+</md-card>

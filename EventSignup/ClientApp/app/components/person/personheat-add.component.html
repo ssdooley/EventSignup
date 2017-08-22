@@ -1,0 +1,17 @@
+﻿<md-toolbar color="primary">Select Person and Heat</md-toolbar>
+<md-card class="styled-card">
+    <md-card-content>
+        <section>
+            <md-select placeholder="Athlete" [(ngModel)]="personHeat.person">
+                <md-option *ngFor="let person of people" [value]="person">{{person.userName}}</md-option>
+            </md-select>
+            <md-select placeholder="Heat" [(ngModel)]="personHeat.heat">
+                <md-option *ngFor="let heat of heats" [value]="heat">{{heat.name}}</md-option>
+            </md-select>
+            <md-select placeholder="Rx/Scaled" [(ngModel)]="personHeat.rxEvent">
+                <md-option *ngFor="let scale of scales" [value]="scale">{{scale}}</md-option>
+            </md-select>
+        </section>
+        <button class="styled-button" md-raised-button color="primary" (click)="addPersonHeat()">Assign Heat</button>
+    </md-card-content>
+</md-card>

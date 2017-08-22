@@ -6,7 +6,8 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Heat } from '../models/heat.model';
-import { ToastrService } from './toastr.service';
+import { ToasterService } from './toaster.service';
+import { CoreApiService } from './core-api.service';
 
 @Injectable()
 export class HeatService {
@@ -15,7 +16,7 @@ export class HeatService {
         return this.heatsSubject.value;
     }
 
-    constructor(private http: Http, private toastrService: ToastrService) { }
+    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService) { }
 
     private heatSubject = new Subject<Heat>();
     private newHeatSubject = new Subject<Heat>();
@@ -36,8 +37,73 @@ export class HeatService {
                 this.heatsSubject.next(heats);
             },
             error => {
-                this.toastrService.alertDanger(error, "Get Heats Error");
+                this.toaster.sendErrorMessage(error);
             });
+    }
+
+    getHeat(id: number): Observable<Heat> {
+        return this.http.get('api/Heat/GetHeat/' + id)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    addHeat(model: Heat) {
+        let body = JSON.stringify(model.id);
+
+        return this.http.post('/api/Heat/AddHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getHeats();
+                this.toaster.sendSuccessMessage(model.name + ' ' + model.time + ' successfully updated');
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    editHeat(model: Heat) {
+        let body = JSON.stringify(model.id);
+
+        return this.http.post('/api/Heat/EditHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getHeats();
+                this.toaster.sendSuccessMessage(model.name + ' ' + model.time + ' successfully updated');
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    deleteHeat(model: Heat) {
+        let body = JSON.stringify(model.id);
+
+        return this.http.post('/api/Heat/DeleteHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getHeats();
+                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.name + ' - ' + model.time);
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    private validateHeat(heat: Heat): boolean {
+        if (!heat.name) {
+            this.toaster.sendErrorMessage('Heat name must have a value');
+            return false;
+        }
+
+        if (!heat.time) {
+            this.toaster.sendErrorMessage('Heat time must have a value');
+            return false;
+        }
+
+        return true;
     }
 
     private extractData(res: Response) {

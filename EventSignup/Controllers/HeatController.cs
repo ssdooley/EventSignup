@@ -22,5 +22,26 @@ namespace EventSignup.Web.Controllers
         {
             return await db.GetHeats();
         }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> AddHeat([FromBody]HeatModel model)
+        {
+            await db.AddHeat(model);
+            return Created("/api/Heat/AddHeat", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> EditHeat([FromBody]HeatModel model)
+        {
+            await db.EditHeat(model);
+            return Accepted("/api/Heat/EditHeat", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> DeleteHeat([FromBody] int id)
+        {
+            await db.DeleteHeat(id);
+            return Accepted("/api/Heat/DeleteHeat", id);
+        }
     }
 }

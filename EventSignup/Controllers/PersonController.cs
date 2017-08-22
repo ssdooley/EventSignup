@@ -28,5 +28,47 @@ namespace EventSignup.Web.Controllers
         {
             return await db.GetAllPeople();
         }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> AddPerson([FromBody]PersonModel model)
+        {
+            await db.AddPerson(model);
+            return Created("/api/Person/AddPerson", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> EditPerson([FromBody]PersonModel model)
+        {
+            await db.EditPerson(model);
+            return Accepted("/api/Person/EditPerson", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> DeletePerson([FromBody]int id)
+        {
+            await db.DeletePerson(id);
+            return Accepted("/api/Person/DeletePerson", id);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> AddPersonHeat([FromBody]PersonHeatModel model)
+        {
+            await db.AddPersonHeat(model);
+            return Created("/api/Person/AddPersonHeat", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> EditPersonHeat([FromBody]PersonHeatModel model)
+        {
+            await db.EditPersonHeat(model);
+            return Accepted("/api/Person/EditPersonHeat", model);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ObjectResult> DeletePersonHeat([FromBody]int id)
+        {
+            await db.DeletePersonHeat(id);
+            return Accepted("/api/Person/DeletePersonHeat", id);
+        }
     }
 }

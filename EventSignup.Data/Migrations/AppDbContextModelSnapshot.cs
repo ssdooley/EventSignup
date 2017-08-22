@@ -49,7 +49,7 @@ namespace EventSignup.Data.Migrations
 
                     b.Property<string>("Sex");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -65,7 +65,7 @@ namespace EventSignup.Data.Migrations
 
                     b.Property<int>("PersonId");
 
-                    b.Property<bool>("RxEvent");
+                    b.Property<string>("RxEvent");
 
                     b.HasKey("Id");
 
@@ -79,7 +79,7 @@ namespace EventSignup.Data.Migrations
             modelBuilder.Entity("EventSignup.Data.PersonHeat", b =>
                 {
                     b.HasOne("EventSignup.Data.Heat", "Heat")
-                        .WithMany()
+                        .WithMany("PeopleHeats")
                         .HasForeignKey("HeatId")
                         .OnDelete(DeleteBehavior.Cascade);
 

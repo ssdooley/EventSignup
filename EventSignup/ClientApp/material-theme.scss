@@ -1,39 +1,39 @@
 @import '~@angular/material/_theming.scss';
 @import 'material-prism.scss';
+@import 'material-toaster.scss';
 @include mat-core();
 
 $default-theme: mat-dark-theme(mat-palette($mat-green), mat-palette($mat-red));
 @include angular-material-theme($default-theme);
 
-html, body, app {
-    overflow: hidden;
-}
-
 html, body, app, .app-frame {
+    overflow: hidden;
     margin: 0;
     height: 100%;
+    box-sizing: border-box;
 }
 
 .fixed-toolbar {
     position: fixed;
     top: 0;
-    z-index: 9999;
+    z-index: 9998;
 }
 
 .sticky-overlay {
     margin-top: 50px;
 }
 
-.mat-typography h1, 
-.mat-typography h2, 
-.mat-typography h3, 
-.mat-typography h4, 
-.mat-typography h5, 
-.mat-typography h6, 
+.mat-typography h1,
+.mat-typography h2,
+.mat-typography h3,
+.mat-typography h4,
+.mat-typography h5,
+.mat-typography h6,
 .mat-typography p,
 md-card.mat-card,
 p.mat-caption,
-md-input-container {
+md-input-container,
+md-select {
     margin-top: 10px;
     margin-left: 15px;
     margin-right: 15px;
@@ -72,9 +72,10 @@ md-nav-list.mat-nav-list .mat-subheader {
     $green-app-primary: mat-palette($mat-green, A400);
     $green-app-accent: mat-palette($mat-light-blue, A400);
     $green-dark: mat-dark-theme($green-app-primary, $green-app-accent);
-    @include angular-material-theme($green-dark);    
+    @include angular-material-theme($green-dark);
 }
 
+.green-app .toaster-primary simple-snack-bar.mat-simple-snackbar,
 .green-app code.snippet,
 .green-app .app-body a.link,
 .green-app .app-body a.link:visited,
@@ -82,6 +83,22 @@ md-nav-list.mat-nav-list .mat-subheader {
 .green-app .md-option.mat-selected.map-primary,
 .green-app .mat-primary .mat-option.mat-selected {
     color: map-get($mat-green, A400);
+}
+
+.green-app .toaster-accent simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-light-blue, A400);
+}
+
+.green-app .toaster-warn simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-red, 500);
+}
+
+.green-app snack-bar-container {
+    background-color: #555;
+}
+
+.green-app snack-bar-container.toaster-inverted {
+    background-color: #fff;
 }
 
 .red-app {
@@ -93,6 +110,7 @@ md-nav-list.mat-nav-list .mat-subheader {
     @include angular-material-theme($red-dark);
 }
 
+.red-app .toaster-primary simple-snack-bar.mat-simple-snackbar,
 .red-app code.snippet,
 .red-app .app-body a.link,
 .red-app .app-body a.link:visited,
@@ -100,6 +118,22 @@ md-nav-list.mat-nav-list .mat-subheader {
 .red-app .md-option.mat-selected.map-primary,
 .red-app .mat-primary .mat-option.mat-selected {
     color: map-get($mat-red, 400);
+}
+
+.red-app .toaster-accent simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-blue, 500);
+}
+
+.red-app .toaster-warn simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-deep-orange, 500);
+}
+
+.red-app snack-bar-container {
+    background-color: #555;
+}
+
+.red-app snack-bar-container.toaster-inverted {
+    background-color: #fff;
 }
 
 .blue-app {
@@ -110,6 +144,7 @@ md-nav-list.mat-nav-list .mat-subheader {
     @include angular-material-theme($blue-dark);
 }
 
+.blue-app .toaster-primary simple-snack-bar.mat-simple-snackbar,
 .blue-app code.snippet,
 .blue-app .app-body a.link,
 .blue-app .app-body a.link:visited,
@@ -119,6 +154,23 @@ md-nav-list.mat-nav-list .mat-subheader {
     color: map-get($mat-light-blue, A400);
 }
 
+.blue-app .toaster-accent simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-yellow, 500);
+}
+
+.blue-app .toaster-warn simple-snack-bar.mat-simple-snackbar {
+    color: map-get($mat-red, 500);
+}
+
+.blue-app snack-bar-container {
+    background-color: #555;
+}
+
+.blue-app snack-bar-container.toaster-inverted {
+    background-color: #fff;
+}
+
 div.cdk-overlay-container {
     background-color: transparent;
+    z-index: 9999;
 }

@@ -5,8 +5,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 import { Person } from '../models/person.model';
-import { ToastrService } from './toastr.service';
+import { ToasterService } from './toaster.service';
+import { HeatService } from './heat.service';
+import { PersonHeat } from "../models/person-heat.model";
+import { CoreApiService } from './core-api.service';
 
 @Injectable()
 export class PersonService {
@@ -15,7 +19,7 @@ export class PersonService {
         return this.peopleSubject.value;
     }
 
-    constructor(private http: Http, private toastrService: ToastrService) { }
+    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService, private heatService: HeatService) { }
 
     private personSubject = new Subject<Person>();
     private newPersonSubject = new Subject<Person>();
@@ -23,6 +27,7 @@ export class PersonService {
     person = this.personSubject.asObservable();
     people = this.peopleSubject.asObservable();
     newPerson = this.newPersonSubject.asObservable();
+    personHeat = new BehaviorSubject<PersonHeat>(new PersonHeat());
 
     setPerson(person: Person): void {
         this.personSubject.next(person);
@@ -36,7 +41,7 @@ export class PersonService {
                 this.peopleSubject.next(people);
             },
             error => {
-                this.toastrService.alertDanger(error, "Get People Error");
+                this.toaster.sendErrorMessage(error);
             });
     }
 
@@ -48,8 +53,122 @@ export class PersonService {
                 this.peopleSubject.next(people);
             },
             error => {
-                this.toastrService.alertDanger(error, "Get All People Error");
+                this.toaster.sendErrorMessage(error);
             });
+    }
+
+    addPerson(model: Person) {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let body = JSON.stringify(model);
+
+        if (this.validatePerson(model)) {
+            this.http.post('api/Person/AddPerson', body, options)
+                .map(res => {
+                    return res;
+                }).catch(this.handleError)
+                .subscribe(res => {
+                    this.toaster.sendSuccessMessage(`${model.userName} successfully added`);
+                },
+                error => {
+                    this.toaster.sendErrorMessage(error);
+                });
+        }
+    }
+
+    editPerson(model: Person) {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let body = JSON.stringify(model);
+
+        if (this.validatePerson(model)) {
+            this.http.post('/api/Person/EditPerson', body, options)
+                .map(res => {
+                    return res;
+                }).catch(this.handleError)
+                .subscribe(res => {
+                    this.toaster.sendSuccessMessage(`${model.userName} successfully updated`);
+                },
+                error => {
+                    this.toaster.sendErrorMessage(error);
+                });
+        }
+    }
+
+    deletePerson(model: Person) {
+        let body = JSON.stringify(model.id);
+
+        return this.http.post('/api/Person/DeletePerson', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getPeople();
+                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.firstName + ' ' + model.lastName);
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+
+    addPersonHeat() {
+        let body = JSON.stringify(this.personHeat.value);
+
+        return this.http.post('api/Person/AddPersonHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.toaster.sendSuccessMessage(`${this.personHeat.value.person.userName} successfully added to heat at ${this.personHeat.value.heat.time}`);
+                this.personHeat.next(new PersonHeat());
+                this.heatService.getHeats();
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    editPersonHeat(model: PersonHeat) {
+        let body = JSON.stringify(model);
+
+        return this.http.post('/api/Person/EditPersonHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getAllPeople();
+                this.toaster.sendSuccessMessage(model.heat + ' - ' + model.person + 'successfully updated');
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    deletePersonHeat(model: PersonHeat) {
+        let body = JSON.stringify(model.id);
+
+        return this.http.post('/api/Person/DeletePersonHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.getAllPeople();
+                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.heat + ' - ' + model.person);
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
+    private validatePerson(person: Person): boolean {
+        if (!person.firstName) {
+            this.toaster.sendErrorMessage('First Name must have a value');
+            return false;
+        }
+
+        if (!person.lastName) {
+            this.toaster.sendErrorMessage('Last Name must have a value');
+            return false;
+        }
+
+        return true;
     }
 
     private extractData(res: Response) {
@@ -61,8 +180,8 @@ export class PersonService {
 
         if (error instanceof Response) {
             const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText} || ''} ${err}`;
+            const err = body.error || body.Message || JSON.stringify(body);
+            errMsg = `${err}`;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

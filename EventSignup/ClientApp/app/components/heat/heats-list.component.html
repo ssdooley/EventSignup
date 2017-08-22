@@ -1,49 +1,18 @@
-﻿<div class="heat-list">
-    <div class="heat-list">
-        <div *ngFor="let heat of heats">
-            <div class="heat-list">{{heat.name}}  Heat</div>
-            <div class="heat-list">{{heat.date | date: 'jm'}}</div>
-            <div class="heat-list">{{heat.slots}}</div>
-            <div *ngFor="let personHeat of heat.peopleHeats">
-                <div class="heat-list">
-                    <ul>
-                        <li>{{personHeat.person.firstName}}</li>
-                        <li>{{personHeat.person.lastName}}</li>
-                        <li>{{personHeat.person.email}}</li>
-                        <li>{{personHeat.person.sex}}</li>
-                        <li>{{personHeat.person.rxEvent}}</li>
-                    </ul>
-                    <!--<md-input-container floatPlaceholder="never">
-                        <input mdInput #filter placeholder="Filter Users" />
-                    </md-input-container>
-                    <md-table #table [dataSource]="dataSource" mdSort>
-                        <ng-container cdkColumnDef="firstName">
-                            <md-header-cell *cdkHeaderCellDef> First Name </md-header-cell>
-                            <md-cell *cdkCellDef="let row"> {{row.person.firstName}} </md-cell>
-                        </ng-container>
-                        <ng-container cdkColumnDef="lastName">
-                            <md-header-cell *cdkHeaderCellDef> Last Name </md-header-cell>
-                            <md-cell *cdkCellDef="let row"> {{row.person.lastName}} </md-cell>
-                        </ng-container>
-                        <ng-container cdkColumnDef="email">
-                            <md-header-cell *cdkHeaderCellDef> Email </md-header-cell>
-                            <md-cell *cdkCellDef="let row"> {{row.person.email}} </md-cell>
-                        </ng-container>   
-                        <ng-container cdkColumnDef="sex">
-                            <md-header-cell *cdkHeaderCellDef> Sex </md-header-cell>
-                            <md-cell *cdkCellDef="let row"> {{row.person.sex}} </md-cell>
-                        </ng-container>
-                        <ng-container cdkColumnDef="rxEvent">
-                            <md-header-cell *cdkHeaderCellDef> RX </md-header-cell>
-                            <md-cell *cdkCellDef="let row"> {{row.person.rxEvent}} </md-cell>
-                        </ng-container>
-                        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-                        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
-                    </md-table>
-                    <md-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></md-paginator>-->
-                </div>
+﻿<personheat-add></personheat-add>
+<div class="heat-list">
+    <div *ngFor="let heat of heats" class="heat-card">
+        <div class="heat-list">{{heat.name}}  Heat</div>
+        <div class="heat-list">{{heat.date | date: 'jm'}}</div>
+        <div class="heat-list">{{heat.slots}}</div>
+        <div class="person-list">
+            <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">
+                <p>{{personHeat.person.firstName}}</p>
+                <p>{{personHeat.person.lastName}}</p>
+                <p>{{personHeat.person.email}}</p>
+                <p>{{personHeat.person.sex}}</p>
+                <p>{{personHeat.rxEvent}}</p>
             </div>
-            <br />
         </div>
     </div>
 </div>
+<heat-edit></heat-edit>

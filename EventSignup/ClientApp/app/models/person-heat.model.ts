@@ -4,7 +4,7 @@ import { Person } from './person.model';
 
 export class PersonHeat {
     id: number;
-    rxEvent: boolean;
+    rxEvent: string;
     heat: Heat;
     person: Person;
 }

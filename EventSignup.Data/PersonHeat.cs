@@ -9,7 +9,7 @@ namespace EventSignup.Data
         public int Id { get; set; }
         public int PersonId { get; set; }
         public int HeatId { get; set; }
-        public bool RxEvent { get; set; }
+        public string RxEvent { get; set; }
 
         public Person Person { get; set; }
         public Heat Heat { get; set; }

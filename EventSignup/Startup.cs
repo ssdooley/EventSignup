@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using EventSignup.Data;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace EventSignup.Web
 {
@@ -54,6 +57,27 @@ namespace EventSignup.Web
             }
 
             app.UseStaticFiles();
+
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "application/json";
+
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+
+                    if (error != null)
+                    {
+                        var ex = error.Error;
+
+                        await context.Response.WriteAsync(new ApiError
+                        {
+                            Message = ex.Message
+                        }.ToString(), Encoding.UTF8);
+                    }
+                });
+            });
 
             app.UseMvc(routes =>
             {

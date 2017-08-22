@@ -8,7 +8,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { Heat } from '../../models/heat.model';
 import { HeatService } from '../../services/heat.service';
 import { PersonService } from '../../services/person.service';
-import { PersonHeatDataSource } from '../../datasources/person-heat.datasource';
+import { PersonHeat } from '../../models/person-heat.model';
 
 
 @Component({
@@ -17,13 +17,10 @@ import { PersonHeatDataSource } from '../../datasources/person-heat.datasource';
     styleUrls: ['heats-list.component.css'],
     providers: [PersonService]
 })
-export class HeatsListComponent implements AfterViewInit {
+export class HeatsListComponent {
     heats: Array<Heat> = new Array<Heat>();
+    peopleHeats: Array<PersonHeat> = new Array<PersonHeat>();
     displayedColumns = ['firstName', 'lastName', 'email', 'sex', 'rxEvent']
-    dataSource: PersonHeatDataSource | null;
-    @ViewChild(MdSort) sort: MdSort;
-    @ViewChild(MdPaginator) paginator: MdPaginator;
-    @ViewChild('filter') filter: ElementRef;
 
 
     constructor(private personService: PersonService,
@@ -31,18 +28,5 @@ export class HeatsListComponent implements AfterViewInit {
                     heatService.heats.subscribe(heats => {
                     this.heats = heats;
                 });
-    }
-
-    ngAfterViewInit() {
-        this.heatService.getHeats();
-        this.dataSource = new PersonHeatDataSource(this.personService, this.paginator, this.sort);
-
-        Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
-            .distinctUntilChanged()
-            .subscribe(() => {
-                if (!this.dataSource) { return; }
-                this.dataSource.filter = this.filter.nativeElement.value;
-            });
     }
 }
