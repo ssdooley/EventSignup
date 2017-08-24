@@ -10,7 +10,11 @@ import { ToasterService } from './services/toaster.service';
 import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from './components/home/home.component';
 import { PrismComponent } from './components/prism/prism.component';
+import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
 
+import { AdminComponent } from './components/admin/admin.component';
+import { AdminListComponent } from './components/admin/admin-list.component';
+import { PersonHeatAdminComponent } from './components/admin/personheat-admin.component';
 
 import { HeatService } from './services/heat.service';
 import { HeatsComponent } from './components/heat/heats.component';
@@ -21,6 +25,7 @@ import { PersonService } from './services/person.service';
 import { PeopleListComponent } from './components/person/person-list.component';
 import { PersonAddComponent } from './components/person/person-add.component';
 import { PersonHeatAddComponent } from './components/person/personheat-add.component';
+import { PersonHeatEditComponent } from './components/person/personheat-edit.component';
 
 
 export const sharedConfig: NgModule = {
@@ -29,13 +34,19 @@ export const sharedConfig: NgModule = {
         AppComponent,
         HomeComponent,
         PrismComponent,
+        AdminComponent,
+        AdminListComponent,
+        PersonHeatAdminComponent,
+        ConfirmDialogComponent,
         HeatsComponent,
         HeatsListComponent,
         HeatEditComponent,
         PeopleListComponent,
         PersonAddComponent,
-        PersonHeatAddComponent
+        PersonHeatAddComponent,
+        PersonHeatEditComponent
     ],
+    entryComponents: [ConfirmDialogComponent],
     providers: [
         ThemeService,
         ToasterService,
@@ -48,6 +59,15 @@ export const sharedConfig: NgModule = {
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            {
+                path: 'admin', component: AdminComponent,
+                children: [
+                    { path: 'heat-list', component: HeatsListComponent },
+                    { path: 'heat-edit/:id', component: HeatEditComponent },
+                    { path: 'personheat-add', component: PersonHeatAddComponent },
+                    { path: 'personheat-edit', component: PersonHeatEditComponent },
+                    { path: 'personheat-admin', component: PersonHeatAdminComponent }
+                ] },
             { path: 'people-list', component: PeopleListComponent },
             { path: '**', redirectTo: 'home' }
         ])

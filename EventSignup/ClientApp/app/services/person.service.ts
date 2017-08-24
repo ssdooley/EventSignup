@@ -33,18 +33,6 @@ export class PersonService {
         this.personSubject.next(person);
     }
 
-    getPeople(): void {
-        this.http.get('api/Person/GetPeople')
-            .map(this.extractData)
-            .catch(this.handleError)
-            .subscribe(people => {
-                this.peopleSubject.next(people);
-            },
-            error => {
-                this.toaster.sendErrorMessage(error);
-            });
-    }
-
     getAllPeople(): void {
         this.http.get('api/Person/GetAllPeople')
             .map(this.extractData)
@@ -102,7 +90,7 @@ export class PersonService {
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
-                this.getPeople();
+                this.getAllPeople();
                 this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.firstName + ' ' + model.lastName);
             },
             error => {
@@ -127,30 +115,31 @@ export class PersonService {
             });
     }
 
-    editPersonHeat(model: PersonHeat) {
-        let body = JSON.stringify(model);
+    editPersonHeat() {
+        let body = JSON.stringify(this.personHeat.value);
 
         return this.http.post('/api/Person/EditPersonHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getAllPeople();
-                this.toaster.sendSuccessMessage(model.heat + ' - ' + model.person + 'successfully updated');
+                this.toaster.sendSuccessMessage(`${this.personHeat.value.heat} successfully updated ${this.personHeat.value.person}`);
             },
             error => {
                 this.toaster.sendErrorMessage(error);
             });
     }
 
-    deletePersonHeat(model: PersonHeat) {
-        let body = JSON.stringify(model.id);
+    deletePersonHeat(id: number) {
+        let body = JSON.stringify(id);
 
         return this.http.post('/api/Person/DeletePersonHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getAllPeople();
-                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.heat + ' - ' + model.person);
+                this.heatService.getHeats();
+                this.toaster.sendSuccessMessage('Delete status successfully set');
             },
             error => {
                 this.toaster.sendErrorMessage(error);

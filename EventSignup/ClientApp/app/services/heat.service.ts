@@ -18,6 +18,8 @@ export class HeatService {
 
     constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService) { }
 
+    editHeat = new BehaviorSubject<Heat>(new Heat());
+
     private heatSubject = new Subject<Heat>();
     private newHeatSubject = new Subject<Heat>();
 
@@ -62,30 +64,30 @@ export class HeatService {
             });
     }
 
-    editHeat(model: Heat) {
-        let body = JSON.stringify(model.id);
+    updateHeat() {
+        let body = JSON.stringify(this.editHeat.value);
 
         return this.http.post('/api/Heat/EditHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getHeats();
-                this.toaster.sendSuccessMessage(model.name + ' ' + model.time + ' successfully updated');
+                this.toaster.sendSuccessMessage(this.editHeat.value.name + ' ' + this.editHeat.value.time + ' successfully updated');
             },
             error => {
                 this.toaster.sendErrorMessage(error);
             });
     }
 
-    deleteHeat(model: Heat) {
-        let body = JSON.stringify(model.id);
+    deleteHeat() {
+        let body = JSON.stringify(this.editHeat.value.id);
 
         return this.http.post('/api/Heat/DeleteHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getHeats();
-                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.name + ' - ' + model.time);
+                this.toaster.sendSuccessMessage('Delete status successfully set for ' + this.editHeat.value.name + ' - ' + this.editHeat.value.time);
             },
             error => {
                 this.toaster.sendErrorMessage(error);

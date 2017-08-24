@@ -1,0 +1,16 @@
+﻿<div class="heat-list">
+    <div *ngFor="let heat of heats" class="heat-card">
+        <div class="heat-list">{{heat.name}}  Heat</div>
+        <!--<div class="heat-list">{{heat.date | date: 'jm'}}</div>-->
+        <!--<div class="heat-list">{{heat.slots}}</div>-->
+        <div class="person-list">
+            <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">
+                <p>{{personHeat.person.firstName}}</p>
+                <p>{{personHeat.person.lastName}}</p>
+                <p>{{personHeat.person.email}}</p>
+                <p>{{personHeat.person.sex}}</p>
+                <p>{{personHeat.rxEvent}}</p>
+            </div>
+        </div>
+    </div>
+</div>

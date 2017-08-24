@@ -23,10 +23,11 @@ namespace EventSignup.Web.Models.Extensions
                     slots = x.Slots,
                     peopleHeats = x.PeopleHeats.Select(y => new PersonHeatModel
                     {
-                        id = y.PersonId,
+                        id = y.Id,
                         rxEvent = y.RxEvent,
                         person = new PersonModel
                         {
+                            id = y.PersonId,
                             firstName = y.Person.FirstName,
                             lastName = y.Person.LastName,
                             userName = y.Person.UserName,

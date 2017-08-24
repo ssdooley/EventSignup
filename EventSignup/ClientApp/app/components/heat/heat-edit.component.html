@@ -1,28 +1,34 @@
-﻿<div class="ui modal" [id]="modalId">
+﻿<div class="ui modal" [id]="modalId" *ngIf="heatService.editHeat | async">
     <md-toolbar>Update Heat</md-toolbar>
     <md-card class="input-card">
+        <h3 placeholder="heat.name">Heat Name: {{heatService.editHeat.value.name}}</h3>
         <md-card-content>
             <section>
                 <md-input-container class="mat-input-container">
-                    <input mdInput [(ngModel)]="heat.name" placeholder="Name" />
+                    <input mdInput [(ngModel)]="heatService.editHeat.value.name" placeholder="Name" />                    
+                </md-input-container>
+                
+                <md-input-container class="mat-input-container">
+                    <input mdInput [(ngModel)]="heatService.editHeat.value.slots" placeholder="# of Slots Available" />
                 </md-input-container>
                 <md-input-container class="mat-input-container">
-                    <input mdInput [(ngModel)]="heat.slots" placeholder="# of Slots Available" />
-                </md-input-container>
-                <md-input-container class="mat-input-container">
-                    <input mdInput [mdDatepicker]="date" [(ngModel)]="heat.date" placeholder="Date" />
+                    <input mdInput [mdDatepicker]="date" [(ngModel)]="heatService.editHeat.value.date" placeholder="Date" />
                     <button mdSuffix [mdDatepickerToggle]="date"></button>
                 </md-input-container>
-
-                <md-slider class="slider-margin" [max]="23" [min]="0" [step]="1" [thumb-label]="true"
-                           [tick-interval]="1" [value]="0" [(ngModel)]="hourvalue" placeholder="Hour">
-                </md-slider>
-                <md-slider class="slider-margin" [max]="45" [min]="0" [step]="15" [thumb-label]="true"
-                           [tick-interval]="15" [value]="0" [(ngModel)]="minutevalue">
-                </md-slider>
-                <br />
-                <input class="slider-input" [(ngModel)]="hourvalue" type="number" min="0" max="23" />
-                <input class="slider-input" [(ngModel)]="minutevalue" type="number" min="0" max="59" />
+                <md-input-container class="mat-input-container">
+                    <input mdInput [(ngModel)]="heatService.editHeat.value.time" placeholder="Time 24hours" />
+                </md-input-container>
+                <!--<section class="time-sliders">
+                    <h4>Hours</h4>
+                    <md-slider class="slider-margin" [max]="23" [min]="0" [step]="1" [thumb-label]="true"
+                               [tick-interval]="1" [value]="0" [(ngModel)]="hourvalue" placeholder="Hour">
+                    </md-slider>
+                    <h4>Minutes</h4>
+                    <md-slider class="slider-margin" [max]="45" [min]="0" [step]="15" [thumb-label]="true"
+                               [tick-interval]="15" [value]="0" [(ngModel)]="minutevalue">
+                    </md-slider>
+                    <h4>{{hourvalue | number: '2.0-0'}}:{{minutevalue | number: '2.0-0'}}</h4>
+                </section>-->
                 <md-datepicker #date></md-datepicker>
             </section>
             <button md-raised-button color="primary" (click)="editHeat()">Update Heat</button>
