@@ -83,15 +83,15 @@ export class PersonService {
         }
     }
 
-    deletePerson(model: Person) {
-        let body = JSON.stringify(model.id);
+    deletePerson(id: number) {
+        let body = JSON.stringify(id);
 
         return this.http.post('/api/Person/DeletePerson', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getAllPeople();
-                this.toaster.sendSuccessMessage('Delete status successfully set for ' + model.firstName + ' ' + model.lastName);
+                this.toaster.sendSuccessMessage('Delete status successfull');
             },
             error => {
                 this.toaster.sendErrorMessage(error);

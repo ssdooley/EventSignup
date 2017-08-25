@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { sharedConfig } from './app.module.shared';
+import { MdDialog } from '@angular/material';
+import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
 
 @NgModule({
     bootstrap: sharedConfig.bootstrap,
@@ -18,7 +20,8 @@ import { sharedConfig } from './app.module.shared';
     providers: [
         { provide: 'ORIGIN_URL', useValue: location.origin },
         ...sharedConfig.providers
-    ]
+    ],
+    entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule {
 }

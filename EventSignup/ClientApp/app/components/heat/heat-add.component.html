@@ -1,0 +1,19 @@
+﻿<md-toolbar color="primary">Add Heats</md-toolbar>
+<md-card class="styled-card">
+    <section>
+        <md-input-container class="mat-input-container">
+            <input mdInput [(ngModel)]="heat.name" placeholder="Name" />
+        </md-input-container>
+        <md-input-container class="mat-input-container">
+            <input mdInput [mdDatepicker]="date" [(ngModel)]="heat.date" placeholder="Date" />
+            <button mdSuffix [mdDatepickerToggle]="date"></button>
+        </md-input-container>
+        <md-input-container class="mat-input-container">
+            <input mdInput [(ngModel)]="heat.time" placeholder="Time 24hours" />
+        </md-input-container>
+        <md-input-container class="mat-input-container">
+            <input mdInput [(ngModel)]="heat.slots" placeholder="# of Slots Available" />
+        </md-input-container>
+    </section>
+    <button class="styled-button" md-raised-button color="primary" (click)="addHeat()">Add Heat</button>
+</md-card>

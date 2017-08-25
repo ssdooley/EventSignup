@@ -27,7 +27,7 @@ export class HeatsListComponent implements OnInit {
 
     private selectedId: number;
     peopleHeats: Array<PersonHeat> = new Array<PersonHeat>();
-    displayedColumns = ['firstName', 'lastName', 'email', 'sex', 'rxEvent']
+    
 
 
     constructor(

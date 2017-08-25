@@ -1,13 +1,47 @@
-﻿<div class="person-list">
-    <person-add></person-add>
-    <div class="person-list">
-        <div *ngFor="let person of people">
-            <div class="person-list">{{person.firstName}}</div>
-            <div class="person-list">{{person.lastName}}</div>
-            <div class="person-list">{{person.email}}</div>
-            <div class="person-list">{{person.sex}}</div>
-            <div class="person-list">{{person.userName}}</div>
-            <br />
-        </div>
-    </div>
+﻿<md-toolbar color="primary">People</md-toolbar>
+<person-add></person-add>
+<div class="table-container mat-elevation-z8">
+    <div>
+        <md-input-container floatPlaceholder="never">
+            <input mdInput #filter placeholder="Filter Names" />
+        </md-input-container>
+    </div>    
+    <md-table #table [dataSource]="dataSource" mdSort>
+        <ng-container cdkColumnDef="firstName">
+            <md-header-cell *cdkHeaderCellDef md-sort-header> First Name </md-header-cell>
+            <md-cell *cdkCellDef="let row"> {{row.firstName}} </md-cell> 
+        </ng-container>
+        <ng-container cdkColumnDef="lastName">
+            <md-header-cell *cdkHeaderCellDef> Last Name </md-header-cell>
+            <md-cell *cdkCellDef="let row">{{row.lastName}}</md-cell>
+        </ng-container>
+        <ng-container cdkColumnDef="sex">
+            <md-header-cell *cdkHeaderCellDef> Gender </md-header-cell>
+            <md-cell *cdkCellDef="let row">{{row.sex}}</md-cell>
+        </ng-container>
+        <ng-container cdkColumnDef="userName">
+            <md-header-cell *cdkHeaderCellDef> User Name </md-header-cell>
+            <md-cell *cdkCellDef="let row">{{row.userName}}</md-cell>
+        </ng-container>
+        <ng-container cdkColumnDef="email">
+            <md-header-cell *cdkHeaderCellDef> Email </md-header-cell>
+            <md-cell *cdkCellDef="let row">{{row.email}}</md-cell>
+        </ng-container>
+        <ng-container cdkColumnDef="menu">
+            <md-header-cell *cdkHeaderCellDef></md-header-cell>
+            <md-cell *cdkCellDef="let row">
+                <button md-icon-button [mdMenuTriggerFor]="menu">
+                    <md-icon>more_vert</md-icon>
+                </button>
+                <md-menu #menu="mdMenu" [overlapTrigger]="false">
+                    <button md-menu-item (click)="deletePerson(row)">Delete</button>
+                </md-menu>
+            </md-cell>
+        </ng-container>
+        <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+        <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
+    <md-paginator #paginator [length]="dataSource.filteredData.length"
+                  [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></md-paginator>
 </div>
+

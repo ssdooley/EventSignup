@@ -20,6 +20,7 @@ import { HeatService } from './services/heat.service';
 import { HeatsComponent } from './components/heat/heats.component';
 import { HeatsListComponent } from './components/heat/heats-list.component';
 import { HeatEditComponent } from './components/heat/heat-edit.component';
+import { HeatAddComponent } from './components/heat/heat-add.component';
 
 import { PersonService } from './services/person.service';
 import { PeopleListComponent } from './components/person/person-list.component';
@@ -41,6 +42,7 @@ export const sharedConfig: NgModule = {
         HeatsComponent,
         HeatsListComponent,
         HeatEditComponent,
+        HeatAddComponent,
         PeopleListComponent,
         PersonAddComponent,
         PersonHeatAddComponent,
@@ -62,13 +64,16 @@ export const sharedConfig: NgModule = {
             {
                 path: 'admin', component: AdminComponent,
                 children: [
+                    { path: 'heats', component: HeatsComponent },
                     { path: 'heat-list', component: HeatsListComponent },
                     { path: 'heat-edit/:id', component: HeatEditComponent },
                     { path: 'personheat-add', component: PersonHeatAddComponent },
                     { path: 'personheat-edit', component: PersonHeatEditComponent },
-                    { path: 'personheat-admin', component: PersonHeatAdminComponent }
-                ] },
-            { path: 'people-list', component: PeopleListComponent },
+                    { path: 'personheat-admin', component: PersonHeatAdminComponent },
+                    { path: 'people-list', component: PeopleListComponent },
+                ]
+            },
+            { path: 'person-add', component: PersonAddComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

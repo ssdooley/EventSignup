@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { MdPaginator, MdSort } from '@angular/material';
+import { MdPaginator, MdSort, MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/fromEvent';
@@ -9,7 +9,8 @@ import { Heat } from '../../models/heat.model';
 import { HeatService } from '../../services/heat.service';
 import { PersonService } from '../../services/person.service';
 import { PersonHeat } from '../../models/person-heat.model';
-import { Person } from "../../models/person.model";
+import { Person } from '../../models/person.model';
+import { ConfirmDialogComponent } from '../dialog/confirm-dialog.component';
 
 @Component({
     selector: 'personheat-admin',
@@ -26,7 +27,7 @@ export class PersonHeatAdminComponent implements OnInit {
     scales = ['RX', 'SCALED'];
 
 
-    constructor(private personService: PersonService,
+    constructor(private personService: PersonService, public dialog: MdDialog,
         private heatService: HeatService) {
         heatService.heats.subscribe(heats => {
             this.heats = heats;
@@ -49,6 +50,11 @@ export class PersonHeatAdminComponent implements OnInit {
     }
 
     deletePersonHeat(id: number) {
-        this.personService.deletePersonHeat(id);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === '1') {
+                this.personService.deletePersonHeat(id);
+            }
+        });
     }
 }
