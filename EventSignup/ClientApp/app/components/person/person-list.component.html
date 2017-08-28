@@ -34,7 +34,7 @@
                     <md-icon>more_vert</md-icon>
                 </button>
                 <md-menu #menu="mdMenu" [overlapTrigger]="false">
-                    <button md-menu-item (click)="deletePerson(row)">Delete</button>
+                    <button md-menu-item (click)="deletePerson(row.id)">Delete</button>
                 </md-menu>
             </md-cell>
         </ng-container>

@@ -57,6 +57,7 @@ export class PersonService {
                 }).catch(this.handleError)
                 .subscribe(res => {
                     this.toaster.sendSuccessMessage(`${model.userName} successfully added`);
+                    this.getAllPeople();
                 },
                 error => {
                     this.toaster.sendErrorMessage(error);

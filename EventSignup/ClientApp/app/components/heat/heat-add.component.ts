@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { HeatService } from '../../services/heat.service';
 import { Heat } from '../../models/heat.model';
 
@@ -9,6 +9,7 @@ import { Heat } from '../../models/heat.model';
 })
 export class HeatAddComponent {
     heat: Heat = new Heat();
+    selectedDate: number = Date.now();
 
     constructor(private heatService: HeatService) {
         this.heatService.newHeat.subscribe(heat => {

@@ -10,6 +10,8 @@ import { Heat } from '../../models/heat.model';
 })
 export class HeatEditComponent {
     heats: Array<Heat> = new Array<Heat>();
+    heat: Heat = new Heat();
+
 
     constructor(private route: ActivatedRoute, private heatService: HeatService) {
         heatService.heats.subscribe(heats => {

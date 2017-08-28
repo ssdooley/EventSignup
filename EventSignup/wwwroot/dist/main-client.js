@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0a20edfdc735327f423a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a48a57007bb8c1d4657f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -715,7 +715,7 @@ var global    = __webpack_require__(8)
   , core      = __webpack_require__(6)
   , hide      = __webpack_require__(24)
   , redefine  = __webpack_require__(12)
-  , ctx       = __webpack_require__(35)
+  , ctx       = __webpack_require__(36)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -940,7 +940,7 @@ module.exports = (__webpack_require__(2))(0);
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(38)
+var toInteger = __webpack_require__(39)
   , min       = Math.min;
 module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -1079,19 +1079,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
 var http_1 = __webpack_require__(60);
+var router_1 = __webpack_require__(85);
 var Observable_1 = __webpack_require__(14);
-var BehaviorSubject_1 = __webpack_require__(83);
-var Subject_1 = __webpack_require__(85);
+var BehaviorSubject_1 = __webpack_require__(84);
+var Subject_1 = __webpack_require__(86);
 __webpack_require__(59);
-__webpack_require__(82);
-var heat_model_1 = __webpack_require__(86);
-var toaster_service_1 = __webpack_require__(62);
-var core_api_service_1 = __webpack_require__(61);
+__webpack_require__(83);
+var heat_model_1 = __webpack_require__(61);
+var toaster_service_1 = __webpack_require__(63);
+var core_api_service_1 = __webpack_require__(62);
 var HeatService = (function () {
-    function HeatService(http, toaster, coreApi) {
+    function HeatService(http, toaster, coreApi, router) {
         this.http = http;
         this.toaster = toaster;
         this.coreApi = coreApi;
+        this.router = router;
         this.heatsSubject = new BehaviorSubject_1.BehaviorSubject([]);
         this.editHeat = new BehaviorSubject_1.BehaviorSubject(new heat_model_1.Heat());
         this.heatSubject = new Subject_1.Subject();
@@ -1128,7 +1130,9 @@ var HeatService = (function () {
     };
     HeatService.prototype.addHeat = function (model) {
         var _this = this;
-        var body = JSON.stringify(model.id);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var body = JSON.stringify(model);
         return this.http.post('/api/Heat/AddHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
@@ -1148,6 +1152,7 @@ var HeatService = (function () {
             .subscribe(function (res) {
             _this.getHeats();
             _this.toaster.sendSuccessMessage(_this.editHeat.value.name + ' ' + _this.editHeat.value.time + ' successfully updated');
+            _this.router.navigate(['/admin/heats']);
         }, function (error) {
             _this.toaster.sendErrorMessage(error);
         });
@@ -1196,7 +1201,7 @@ var HeatService = (function () {
 }());
 HeatService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http, toaster_service_1.ToasterService, core_api_service_1.CoreApiService])
+    __metadata("design:paramtypes", [http_1.Http, toaster_service_1.ToasterService, core_api_service_1.CoreApiService, router_1.Router])
 ], HeatService);
 exports.HeatService = HeatService;
 
@@ -1227,7 +1232,7 @@ module.exports = function(KEY, exec){
 // 4 -> Array#every
 // 5 -> Array#find
 // 6 -> Array#findIndex
-var ctx      = __webpack_require__(35)
+var ctx      = __webpack_require__(36)
   , IObject  = __webpack_require__(41)
   , toObject = __webpack_require__(19)
   , toLength = __webpack_require__(15)
@@ -1351,7 +1356,7 @@ module.exports = {
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has         = __webpack_require__(11)
   , toObject    = __webpack_require__(19)
-  , IE_PROTO    = __webpack_require__(78)('IE_PROTO')
+  , IE_PROTO    = __webpack_require__(79)('IE_PROTO')
   , ObjectProto = Object.prototype;
 
 module.exports = Object.getPrototypeOf || function(O){
@@ -1387,15 +1392,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
 var http_1 = __webpack_require__(60);
 var Observable_1 = __webpack_require__(14);
-var BehaviorSubject_1 = __webpack_require__(83);
-var Subject_1 = __webpack_require__(85);
+var BehaviorSubject_1 = __webpack_require__(84);
+var Subject_1 = __webpack_require__(86);
 __webpack_require__(59);
-__webpack_require__(82);
+__webpack_require__(83);
 __webpack_require__(127);
-var toaster_service_1 = __webpack_require__(62);
+var toaster_service_1 = __webpack_require__(63);
 var heat_service_1 = __webpack_require__(20);
 var person_heat_model_1 = __webpack_require__(47);
-var core_api_service_1 = __webpack_require__(61);
+var core_api_service_1 = __webpack_require__(62);
 var PersonService = (function () {
     function PersonService(http, toaster, coreApi, heatService) {
         this.http = http;
@@ -1443,6 +1448,7 @@ var PersonService = (function () {
             }).catch(this.handleError)
                 .subscribe(function (res) {
                 _this.toaster.sendSuccessMessage(model.userName + " successfully added");
+                _this.getAllPeople();
             }, function (error) {
                 _this.toaster.sendErrorMessage(error);
             });
@@ -1687,6 +1693,40 @@ module.exports = function(it, S){
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(4);
+var material_1 = __webpack_require__(27);
+var ConfirmDialogComponent = (function () {
+    function ConfirmDialogComponent(dialogRef) {
+        this.dialogRef = dialogRef;
+    }
+    return ConfirmDialogComponent;
+}());
+ConfirmDialogComponent = __decorate([
+    core_1.Component({
+        selector: 'confirm-dialog',
+        template: __webpack_require__(328)
+    }),
+    __metadata("design:paramtypes", [material_1.MdDialogRef])
+], ConfirmDialogComponent);
+exports.ConfirmDialogComponent = ConfirmDialogComponent;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // optional / simple context binding
 var aFunction = __webpack_require__(31);
 module.exports = function(fn, that, length){
@@ -1709,14 +1749,14 @@ module.exports = function(fn, that, length){
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject    = __webpack_require__(1)
   , dPs         = __webpack_require__(107)
-  , enumBugKeys = __webpack_require__(65)
-  , IE_PROTO    = __webpack_require__(78)('IE_PROTO')
+  , enumBugKeys = __webpack_require__(66)
+  , IE_PROTO    = __webpack_require__(79)('IE_PROTO')
   , Empty       = function(){ /* empty */ }
   , PROTOTYPE   = 'prototype';
 
@@ -1756,19 +1796,19 @@ module.exports = Object.create || function create(O, Properties){
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys       = __webpack_require__(109)
-  , enumBugKeys = __webpack_require__(65);
+  , enumBugKeys = __webpack_require__(66);
 
 module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -1777,40 +1817,6 @@ var ceil  = Math.ceil
 module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(4);
-var material_1 = __webpack_require__(27);
-var ConfirmDialogComponent = (function () {
-    function ConfirmDialogComponent(dialogRef) {
-        this.dialogRef = dialogRef;
-    }
-    return ConfirmDialogComponent;
-}());
-ConfirmDialogComponent = __decorate([
-    core_1.Component({
-        selector: 'confirm-dialog',
-        template: __webpack_require__(328)
-    }),
-    __metadata("design:paramtypes", [material_1.MdDialogRef])
-], ConfirmDialogComponent);
-exports.ConfirmDialogComponent = ConfirmDialogComponent;
-
 
 /***/ }),
 /* 40 */
@@ -1846,7 +1852,7 @@ module.exports = {};
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys      = __webpack_require__(109)
-  , hiddenKeys = __webpack_require__(65).concat('length', 'prototype');
+  , hiddenKeys = __webpack_require__(66).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
@@ -1856,7 +1862,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(38)
+var toInteger = __webpack_require__(39)
   , max       = Math.max
   , min       = Math.min;
 module.exports = function(index, length){
@@ -1943,7 +1949,7 @@ module.exports = function(KEY, length, exec){
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx         = __webpack_require__(35)
+var ctx         = __webpack_require__(36)
   , call        = __webpack_require__(101)
   , isArrayIter = __webpack_require__(99)
   , anObject    = __webpack_require__(1)
@@ -2011,7 +2017,7 @@ module.exports = function(key){
 var $export = __webpack_require__(0)
   , defined = __webpack_require__(23)
   , fails   = __webpack_require__(3)
-  , spaces  = __webpack_require__(80)
+  , spaces  = __webpack_require__(81)
   , space   = '[' + spaces + ']'
   , non     = '\u200b\u0085'
   , ltrim   = RegExp('^' + space + space + '*')
@@ -2048,7 +2054,7 @@ module.exports = exporter;
 var $at  = __webpack_require__(112)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(71)(String, 'String', function(iterated){
+__webpack_require__(72)(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -2118,6 +2124,21 @@ module.exports = (__webpack_require__(2))(30);
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+var Heat = (function () {
+    function Heat() {
+    }
+    return Heat;
+}());
+exports.Heat = Heat;
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2163,7 +2184,7 @@ exports.CoreApiService = CoreApiService;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2230,7 +2251,7 @@ exports.ToasterService = ToasterService;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = function(it, Constructor, name, forbiddenField){
@@ -2240,7 +2261,7 @@ module.exports = function(it, Constructor, name, forbiddenField){
 };
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2248,15 +2269,15 @@ module.exports = function(it, Constructor, name, forbiddenField){
 var global            = __webpack_require__(8)
   , $export           = __webpack_require__(0)
   , redefine          = __webpack_require__(12)
-  , redefineAll       = __webpack_require__(75)
+  , redefineAll       = __webpack_require__(76)
   , meta              = __webpack_require__(29)
   , forOf             = __webpack_require__(49)
-  , anInstance        = __webpack_require__(63)
+  , anInstance        = __webpack_require__(64)
   , isObject          = __webpack_require__(5)
   , fails             = __webpack_require__(3)
   , $iterDetect       = __webpack_require__(103)
   , setToStringTag    = __webpack_require__(52)
-  , inheritIfRequired = __webpack_require__(68);
+  , inheritIfRequired = __webpack_require__(69);
 
 module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
   var Base  = global[NAME]
@@ -2331,7 +2352,7 @@ module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -2340,7 +2361,7 @@ module.exports = (
 ).split(',');
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MATCH = __webpack_require__(7)('match');
@@ -2357,7 +2378,7 @@ module.exports = function(KEY){
 };
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2376,11 +2397,11 @@ module.exports = function(){
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject       = __webpack_require__(5)
-  , setPrototypeOf = __webpack_require__(76).set;
+  , setPrototypeOf = __webpack_require__(77).set;
 module.exports = function(that, target, C){
   var P, S = target.constructor;
   if(S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf){
@@ -2389,7 +2410,7 @@ module.exports = function(that, target, C){
 };
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
@@ -2399,7 +2420,7 @@ module.exports = Array.isArray || function isArray(arg){
 };
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.2.8 IsRegExp(argument)
@@ -2412,12 +2433,12 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var LIBRARY        = __webpack_require__(72)
+var LIBRARY        = __webpack_require__(73)
   , $export        = __webpack_require__(0)
   , redefine       = __webpack_require__(12)
   , hide           = __webpack_require__(24)
@@ -2488,13 +2509,13 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
 };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = false;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 // 20.2.2.14 Math.expm1(x)
@@ -2509,7 +2530,7 @@ module.exports = (!$expm1
 } : $expm1;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports) {
 
 // 20.2.2.28 Math.sign(x)
@@ -2518,7 +2539,7 @@ module.exports = Math.sign || function sign(x){
 };
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var redefine = __webpack_require__(12);
@@ -2528,7 +2549,7 @@ module.exports = function(target, src, safe){
 };
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
@@ -2543,7 +2564,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function(test, buggy, set){
       try {
-        set = __webpack_require__(35)(Function.call, __webpack_require__(30).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(36)(Function.call, __webpack_require__(30).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch(e){ buggy = true; }
@@ -2558,7 +2579,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2577,7 +2598,7 @@ module.exports = function(KEY){
 };
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(53)('keys')
@@ -2587,11 +2608,11 @@ module.exports = function(key){
 };
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // helper for String#{startsWith, endsWith, includes}
-var isRegExp = __webpack_require__(70)
+var isRegExp = __webpack_require__(71)
   , defined  = __webpack_require__(23);
 
 module.exports = function(that, searchString, NAME){
@@ -2600,14 +2621,14 @@ module.exports = function(that, searchString, NAME){
 };
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports) {
 
 module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2621,7 +2642,7 @@ var addToUnscopables = __webpack_require__(40)
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(71)(Array, 'Array', function(iterated, kind){
+module.exports = __webpack_require__(72)(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
@@ -2647,7 +2668,7 @@ addToUnscopables('values');
 addToUnscopables('entries');
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2659,37 +2680,22 @@ Observable_1.Observable.prototype._catch = catch_1._catch;
 //# sourceMappingURL=catch.js.map
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(2))(32);
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(2))(52);
 
 /***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = (__webpack_require__(2))(6);
-
-/***/ }),
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Heat = (function () {
-    function Heat() {
-    }
-    return Heat;
-}());
-exports.Heat = Heat;
-
+module.exports = (__webpack_require__(2))(6);
 
 /***/ }),
 /* 87 */
@@ -2723,10 +2729,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
-var Subject_1 = __webpack_require__(85);
+var Subject_1 = __webpack_require__(86);
 var material_1 = __webpack_require__(27);
 __webpack_require__(59);
-__webpack_require__(82);
+__webpack_require__(83);
 var ThemeService = (function () {
     function ThemeService(overlayContainer) {
         this.overlayContainer = overlayContainer;
@@ -2890,15 +2896,15 @@ module.exports = function(it){
 "use strict";
 
 var dP          = __webpack_require__(9).f
-  , create      = __webpack_require__(36)
-  , redefineAll = __webpack_require__(75)
-  , ctx         = __webpack_require__(35)
-  , anInstance  = __webpack_require__(63)
+  , create      = __webpack_require__(37)
+  , redefineAll = __webpack_require__(76)
+  , ctx         = __webpack_require__(36)
+  , anInstance  = __webpack_require__(64)
   , defined     = __webpack_require__(23)
   , forOf       = __webpack_require__(49)
-  , $iterDefine = __webpack_require__(71)
+  , $iterDefine = __webpack_require__(72)
   , step        = __webpack_require__(104)
-  , setSpecies  = __webpack_require__(77)
+  , setSpecies  = __webpack_require__(78)
   , DESCRIPTORS = __webpack_require__(10)
   , fastKey     = __webpack_require__(29).fastKey
   , SIZE        = DESCRIPTORS ? '_s' : 'size';
@@ -3118,7 +3124,7 @@ module.exports = function(iterator, fn, value, entries){
 
 "use strict";
 
-var create         = __webpack_require__(36)
+var create         = __webpack_require__(37)
   , descriptor     = __webpack_require__(33)
   , setToStringTag = __webpack_require__(52)
   , IteratorPrototype = {};
@@ -3181,7 +3187,7 @@ module.exports = Math.log1p || function log1p(x){
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
-var getKeys  = __webpack_require__(37)
+var getKeys  = __webpack_require__(38)
   , gOPS     = __webpack_require__(50)
   , pIE      = __webpack_require__(51)
   , toObject = __webpack_require__(19)
@@ -3219,7 +3225,7 @@ module.exports = !$assign || __webpack_require__(3)(function(){
 
 var dP       = __webpack_require__(9)
   , anObject = __webpack_require__(1)
-  , getKeys  = __webpack_require__(37);
+  , getKeys  = __webpack_require__(38);
 
 module.exports = __webpack_require__(10) ? Object.defineProperties : function defineProperties(O, Properties){
   anObject(O);
@@ -3263,7 +3269,7 @@ module.exports.f = function getOwnPropertyNames(it){
 var has          = __webpack_require__(11)
   , toIObject    = __webpack_require__(18)
   , arrayIndexOf = __webpack_require__(90)(false)
-  , IE_PROTO     = __webpack_require__(78)('IE_PROTO');
+  , IE_PROTO     = __webpack_require__(79)('IE_PROTO');
 
 module.exports = function(object, names){
   var O      = toIObject(object)
@@ -3285,7 +3291,7 @@ module.exports = function(object, names){
 var $parseFloat = __webpack_require__(8).parseFloat
   , $trim       = __webpack_require__(54).trim;
 
-module.exports = 1 / $parseFloat(__webpack_require__(80) + '-0') !== -Infinity ? function parseFloat(str){
+module.exports = 1 / $parseFloat(__webpack_require__(81) + '-0') !== -Infinity ? function parseFloat(str){
   var string = $trim(String(str), 3)
     , result = $parseFloat(string);
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
@@ -3297,7 +3303,7 @@ module.exports = 1 / $parseFloat(__webpack_require__(80) + '-0') !== -Infinity ?
 
 var $parseInt = __webpack_require__(8).parseInt
   , $trim     = __webpack_require__(54).trim
-  , ws        = __webpack_require__(80)
+  , ws        = __webpack_require__(81)
   , hex       = /^[\-+]?0[xX]/;
 
 module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? function parseInt(str, radix){
@@ -3309,7 +3315,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(38)
+var toInteger = __webpack_require__(39)
   , defined   = __webpack_require__(23);
 // true  -> String#at
 // false -> String#codePointAt
@@ -3333,7 +3339,7 @@ module.exports = function(TO_STRING){
 
 "use strict";
 
-var toInteger = __webpack_require__(38)
+var toInteger = __webpack_require__(39)
   , defined   = __webpack_require__(23);
 
 module.exports = function repeat(count){
@@ -3373,7 +3379,7 @@ module.exports = __webpack_require__(6).getIteratorMethod = function(it){
 var strong = __webpack_require__(94);
 
 // 23.1 Map Objects
-module.exports = __webpack_require__(64)('Map', function(get){
+module.exports = __webpack_require__(65)('Map', function(get){
   return function Map(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.1.3.6 Map.prototype.get(key)
@@ -3394,7 +3400,7 @@ module.exports = __webpack_require__(64)('Map', function(get){
 // 21.2.5.3 get RegExp.prototype.flags()
 if(__webpack_require__(10) && /./g.flags != 'g')__webpack_require__(9).f(RegExp.prototype, 'flags', {
   configurable: true,
-  get: __webpack_require__(67)
+  get: __webpack_require__(68)
 });
 
 /***/ }),
@@ -3451,7 +3457,7 @@ __webpack_require__(48)('search', 1, function(defined, SEARCH, $search){
 // @@split logic
 __webpack_require__(48)('split', 2, function(defined, SPLIT, $split){
   'use strict';
-  var isRegExp   = __webpack_require__(70)
+  var isRegExp   = __webpack_require__(71)
     , _split     = $split
     , $push      = [].push
     , $SPLIT     = 'split'
@@ -3528,7 +3534,7 @@ __webpack_require__(48)('split', 2, function(defined, SPLIT, $split){
 var strong = __webpack_require__(94);
 
 // 23.2 Set Objects
-module.exports = __webpack_require__(64)('Set', function(get){
+module.exports = __webpack_require__(65)('Set', function(get){
   return function Set(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.2.3.1 Set.prototype.add(value)
@@ -3559,16 +3565,16 @@ var global         = __webpack_require__(8)
   , wksDefine      = __webpack_require__(187)
   , keyOf          = __webpack_require__(184)
   , enumKeys       = __webpack_require__(182)
-  , isArray        = __webpack_require__(69)
+  , isArray        = __webpack_require__(70)
   , anObject       = __webpack_require__(1)
   , toIObject      = __webpack_require__(18)
   , toPrimitive    = __webpack_require__(34)
   , createDesc     = __webpack_require__(33)
-  , _create        = __webpack_require__(36)
+  , _create        = __webpack_require__(37)
   , gOPNExt        = __webpack_require__(108)
   , $GOPD          = __webpack_require__(30)
   , $DP            = __webpack_require__(9)
-  , $keys          = __webpack_require__(37)
+  , $keys          = __webpack_require__(38)
   , gOPD           = $GOPD.f
   , dP             = $DP.f
   , gOPN           = gOPNExt.f
@@ -3695,7 +3701,7 @@ if(!USE_NATIVE){
   __webpack_require__(51).f  = $propertyIsEnumerable;
   __webpack_require__(50).f = $getOwnPropertySymbols;
 
-  if(DESCRIPTORS && !__webpack_require__(72)){
+  if(DESCRIPTORS && !__webpack_require__(73)){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -3818,7 +3824,7 @@ var methods = {
 };
 
 // 23.3 WeakMap Objects
-var $WeakMap = module.exports = __webpack_require__(64)('WeakMap', wrapper, methods, weak, true, true);
+var $WeakMap = module.exports = __webpack_require__(65)('WeakMap', wrapper, methods, weak, true, true);
 
 // IE11 WeakMap frozen keys fix
 if(new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7){
@@ -3844,7 +3850,7 @@ if(new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7){
 /* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $iterators    = __webpack_require__(81)
+var $iterators    = __webpack_require__(82)
   , redefine      = __webpack_require__(12)
   , global        = __webpack_require__(8)
   , hide          = __webpack_require__(24)
@@ -7691,15 +7697,15 @@ exports.AppMaterialModule = AppMaterialModule;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var router_1 = __webpack_require__(84);
+var router_1 = __webpack_require__(85);
 var app_module_material_1 = __webpack_require__(139);
-var core_api_service_1 = __webpack_require__(61);
+var core_api_service_1 = __webpack_require__(62);
 var theme_service_1 = __webpack_require__(88);
-var toaster_service_1 = __webpack_require__(62);
+var toaster_service_1 = __webpack_require__(63);
 var app_component_1 = __webpack_require__(145);
 var home_component_1 = __webpack_require__(150);
 var prism_component_1 = __webpack_require__(155);
-var confirm_dialog_component_1 = __webpack_require__(39);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var admin_component_1 = __webpack_require__(143);
 var admin_list_component_1 = __webpack_require__(142);
 var personheat_admin_component_1 = __webpack_require__(144);
@@ -7783,7 +7789,7 @@ var animations_1 = __webpack_require__(136);
 var forms_1 = __webpack_require__(376);
 var http_1 = __webpack_require__(60);
 var app_module_shared_1 = __webpack_require__(140);
-var confirm_dialog_component_1 = __webpack_require__(39);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var AppModule = (function () {
     function AppModule() {
     }
@@ -7920,7 +7926,7 @@ __webpack_require__(58);
 var heat_service_1 = __webpack_require__(20);
 var person_service_1 = __webpack_require__(28);
 var person_heat_model_1 = __webpack_require__(47);
-var confirm_dialog_component_1 = __webpack_require__(39);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var PersonHeatAdminComponent = (function () {
     function PersonHeatAdminComponent(personService, dialog, heatService) {
         var _this = this;
@@ -8045,12 +8051,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
 var heat_service_1 = __webpack_require__(20);
-var heat_model_1 = __webpack_require__(86);
+var heat_model_1 = __webpack_require__(61);
 var HeatAddComponent = (function () {
     function HeatAddComponent(heatService) {
         var _this = this;
         this.heatService = heatService;
         this.heat = new heat_model_1.Heat();
+        this.selectedDate = Date.now();
         this.heatService.newHeat.subscribe(function (heat) {
             _this.heat = heat;
         });
@@ -8088,14 +8095,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
-var router_1 = __webpack_require__(84);
+var router_1 = __webpack_require__(85);
 var heat_service_1 = __webpack_require__(20);
+var heat_model_1 = __webpack_require__(61);
 var HeatEditComponent = (function () {
     function HeatEditComponent(route, heatService) {
         var _this = this;
         this.route = route;
         this.heatService = heatService;
         this.heats = new Array();
+        this.heat = new heat_model_1.Heat();
         heatService.heats.subscribe(function (heats) {
             _this.heats = heats;
         });
@@ -8141,13 +8150,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(4);
 var material_1 = __webpack_require__(27);
-var router_1 = __webpack_require__(84);
+var router_1 = __webpack_require__(85);
 __webpack_require__(351);
 __webpack_require__(56);
 __webpack_require__(57);
 __webpack_require__(58);
 var heat_service_1 = __webpack_require__(20);
 var person_service_1 = __webpack_require__(28);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var HeatsListComponent = (function () {
     function HeatsListComponent(route, dialog, router, personService, heatService) {
         var _this = this;
@@ -8181,13 +8191,13 @@ var HeatsListComponent = (function () {
         this.router.navigate(['admin/heat-edit', heat.id]);
     };
     HeatsListComponent.prototype.deleteHeat = function (id) {
-        //const dialogRef = this.dialog.open(ConfirmDialogComponent);
-        //dialogRef.afterClosed().subscribe(result => {
-        //    if (result === '1') {
-        //        this.heatService.deleteHeat();
-        //    }
-        //});
-        this.heatService.deleteHeat();
+        var _this = this;
+        var dialogRef = this.dialog.open(confirm_dialog_component_1.ConfirmDialogComponent);
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result === '1') {
+                _this.heatService.deleteHeat();
+            }
+        });
     };
     return HeatsListComponent;
 }());
@@ -8348,7 +8358,7 @@ __webpack_require__(58);
 var person_model_1 = __webpack_require__(87);
 var person_service_1 = __webpack_require__(28);
 var person_heat_datasource_1 = __webpack_require__(156);
-var confirm_dialog_component_1 = __webpack_require__(39);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var PeopleListComponent = (function () {
     function PeopleListComponent(personService, dialog) {
         var _this = this;
@@ -8375,12 +8385,12 @@ var PeopleListComponent = (function () {
             _this.dataSource.filter = _this.filter.nativeElement.value;
         });
     };
-    PeopleListComponent.prototype.deletePerson = function () {
+    PeopleListComponent.prototype.deletePerson = function (id) {
         var _this = this;
         var dialogRef = this.dialog.open(confirm_dialog_component_1.ConfirmDialogComponent);
         dialogRef.afterClosed().subscribe(function (result) {
             if (result === '1') {
-                _this.personService.deletePerson(_this.person.id);
+                _this.personService.deletePerson(id);
             }
         });
     };
@@ -8490,7 +8500,7 @@ var material_1 = __webpack_require__(27);
 var person_service_1 = __webpack_require__(28);
 var person_heat_model_1 = __webpack_require__(47);
 var heat_service_1 = __webpack_require__(20);
-var confirm_dialog_component_1 = __webpack_require__(39);
+var confirm_dialog_component_1 = __webpack_require__(35);
 var PersonHeatEditComponent = (function () {
     function PersonHeatEditComponent(personService, heatService, dialog) {
         var _this = this;
@@ -8598,7 +8608,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var cdk_1 = __webpack_require__(129);
-var BehaviorSubject_1 = __webpack_require__(83);
+var BehaviorSubject_1 = __webpack_require__(84);
 var Observable_1 = __webpack_require__(14);
 __webpack_require__(350);
 __webpack_require__(59);
@@ -8983,7 +8993,7 @@ __webpack_require__(190);
 __webpack_require__(193);
 __webpack_require__(192);
 __webpack_require__(207);
-__webpack_require__(81);
+__webpack_require__(82);
 module.exports = __webpack_require__(6).Array;
 
 /***/ }),
@@ -9184,7 +9194,7 @@ module.exports = __webpack_require__(6).Symbol;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(46);
-__webpack_require__(81);
+__webpack_require__(82);
 __webpack_require__(124);
 module.exports = __webpack_require__(6).WeakMap;
 
@@ -9275,7 +9285,7 @@ module.exports = function(iter, ITERATOR){
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(5)
-  , isArray  = __webpack_require__(69)
+  , isArray  = __webpack_require__(70)
   , SPECIES  = __webpack_require__(7)('species');
 
 module.exports = function(original){
@@ -9308,11 +9318,11 @@ module.exports = function(original, length){
 
 "use strict";
 
-var redefineAll       = __webpack_require__(75)
+var redefineAll       = __webpack_require__(76)
   , getWeak           = __webpack_require__(29).getWeak
   , anObject          = __webpack_require__(1)
   , isObject          = __webpack_require__(5)
-  , anInstance        = __webpack_require__(63)
+  , anInstance        = __webpack_require__(64)
   , forOf             = __webpack_require__(49)
   , createArrayMethod = __webpack_require__(22)
   , $has              = __webpack_require__(11)
@@ -9411,7 +9421,7 @@ module.exports = function(hint){
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
-var getKeys = __webpack_require__(37)
+var getKeys = __webpack_require__(38)
   , gOPS    = __webpack_require__(50)
   , pIE     = __webpack_require__(51);
 module.exports = function(it){
@@ -9451,7 +9461,7 @@ module.exports = function(fn, args, that){
 /* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getKeys   = __webpack_require__(37)
+var getKeys   = __webpack_require__(38)
   , toIObject = __webpack_require__(18);
 module.exports = function(object, el){
   var O      = toIObject(object)
@@ -9492,7 +9502,7 @@ module.exports = Object.is || function is(x, y){
 
 var global         = __webpack_require__(8)
   , core           = __webpack_require__(6)
-  , LIBRARY        = __webpack_require__(72)
+  , LIBRARY        = __webpack_require__(73)
   , wksExt         = __webpack_require__(114)
   , defineProperty = __webpack_require__(9).f;
 module.exports = function(name){
@@ -9617,7 +9627,7 @@ $export($export.P + $export.F * !STRICT, 'Array', {
 
 "use strict";
 
-var ctx            = __webpack_require__(35)
+var ctx            = __webpack_require__(36)
   , $export        = __webpack_require__(0)
   , toObject       = __webpack_require__(19)
   , call           = __webpack_require__(101)
@@ -9683,7 +9693,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(17)($nati
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Array', {isArray: __webpack_require__(69)});
+$export($export.S, 'Array', {isArray: __webpack_require__(70)});
 
 /***/ }),
 /* 198 */
@@ -9711,7 +9721,7 @@ $export($export.P + $export.F * (__webpack_require__(41) != Object || !__webpack
 
 var $export       = __webpack_require__(0)
   , toIObject     = __webpack_require__(18)
-  , toInteger     = __webpack_require__(38)
+  , toInteger     = __webpack_require__(39)
   , toLength      = __webpack_require__(15)
   , $native       = [].lastIndexOf
   , NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
@@ -9887,7 +9897,7 @@ $export($export.P + $export.F * (fails(function(){
 /* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(77)('Array');
+__webpack_require__(78)('Array');
 
 /***/ }),
 /* 208 */
@@ -10094,7 +10104,7 @@ $export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
 
 // 20.2.2.9 Math.cbrt(x)
 var $export = __webpack_require__(0)
-  , sign    = __webpack_require__(74);
+  , sign    = __webpack_require__(75);
 
 $export($export.S, 'Math', {
   cbrt: function cbrt(x){
@@ -10135,7 +10145,7 @@ $export($export.S, 'Math', {
 
 // 20.2.2.14 Math.expm1(x)
 var $export = __webpack_require__(0)
-  , $expm1  = __webpack_require__(73);
+  , $expm1  = __webpack_require__(74);
 
 $export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1});
 
@@ -10145,7 +10155,7 @@ $export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1})
 
 // 20.2.2.16 Math.fround(x)
 var $export   = __webpack_require__(0)
-  , sign      = __webpack_require__(74)
+  , sign      = __webpack_require__(75)
   , pow       = Math.pow
   , EPSILON   = pow(2, -52)
   , EPSILON32 = pow(2, -23)
@@ -10264,7 +10274,7 @@ $export($export.S, 'Math', {
 // 20.2.2.28 Math.sign(x)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Math', {sign: __webpack_require__(74)});
+$export($export.S, 'Math', {sign: __webpack_require__(75)});
 
 /***/ }),
 /* 230 */
@@ -10272,7 +10282,7 @@ $export($export.S, 'Math', {sign: __webpack_require__(74)});
 
 // 20.2.2.30 Math.sinh(x)
 var $export = __webpack_require__(0)
-  , expm1   = __webpack_require__(73)
+  , expm1   = __webpack_require__(74)
   , exp     = Math.exp;
 
 // V8 near Chromium 38 has a problem with very small numbers
@@ -10292,7 +10302,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 
 // 20.2.2.33 Math.tanh(x)
 var $export = __webpack_require__(0)
-  , expm1   = __webpack_require__(73)
+  , expm1   = __webpack_require__(74)
   , exp     = Math.exp;
 
 $export($export.S, 'Math', {
@@ -10325,7 +10335,7 @@ $export($export.S, 'Math', {
 var global            = __webpack_require__(8)
   , has               = __webpack_require__(11)
   , cof               = __webpack_require__(32)
-  , inheritIfRequired = __webpack_require__(68)
+  , inheritIfRequired = __webpack_require__(69)
   , toPrimitive       = __webpack_require__(34)
   , fails             = __webpack_require__(3)
   , gOPN              = __webpack_require__(43).f
@@ -10337,7 +10347,7 @@ var global            = __webpack_require__(8)
   , Base              = $Number
   , proto             = $Number.prototype
   // Opera ~12 has broken Object#toString
-  , BROKEN_COF        = cof(__webpack_require__(36)(proto)) == NUMBER
+  , BROKEN_COF        = cof(__webpack_require__(37)(proto)) == NUMBER
   , TRIM              = 'trim' in String.prototype;
 
 // 7.1.3 ToNumber(argument)
@@ -10494,7 +10504,7 @@ $export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', {parse
 "use strict";
 
 var $export      = __webpack_require__(0)
-  , toInteger    = __webpack_require__(38)
+  , toInteger    = __webpack_require__(39)
   , aNumberValue = __webpack_require__(89)
   , repeat       = __webpack_require__(113)
   , $toFixed     = 1..toFixed
@@ -10645,7 +10655,7 @@ $export($export.S + $export.F, 'Object', {assign: __webpack_require__(106)});
 
 var $export = __webpack_require__(0)
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', {create: __webpack_require__(36)});
+$export($export.S, 'Object', {create: __webpack_require__(37)});
 
 /***/ }),
 /* 247 */
@@ -10767,7 +10777,7 @@ $export($export.S, 'Object', {is: __webpack_require__(186)});
 
 // 19.1.2.14 Object.keys(O)
 var toObject = __webpack_require__(19)
-  , $keys    = __webpack_require__(37);
+  , $keys    = __webpack_require__(38);
 
 __webpack_require__(21)('keys', function(){
   return function keys(it){
@@ -10809,7 +10819,7 @@ __webpack_require__(21)('seal', function($seal){
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 var $export = __webpack_require__(0);
-$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(76).set});
+$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(77).set});
 
 /***/ }),
 /* 261 */
@@ -10856,7 +10866,7 @@ $export($export.S + $export.F * !__webpack_require__(3)(function(){
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
 var $export    = __webpack_require__(0)
-  , create     = __webpack_require__(36)
+  , create     = __webpack_require__(37)
   , aFunction  = __webpack_require__(31)
   , anObject   = __webpack_require__(1)
   , isObject   = __webpack_require__(5)
@@ -11098,7 +11108,7 @@ $export($export.S, 'Reflect', {
 
 // 26.1.14 Reflect.setPrototypeOf(target, proto)
 var $export  = __webpack_require__(0)
-  , setProto = __webpack_require__(76);
+  , setProto = __webpack_require__(77);
 
 if(setProto)$export($export.S, 'Reflect', {
   setPrototypeOf: function setPrototypeOf(target, proto){
@@ -11153,11 +11163,11 @@ $export($export.S, 'Reflect', {set: set});
 /***/ (function(module, exports, __webpack_require__) {
 
 var global            = __webpack_require__(8)
-  , inheritIfRequired = __webpack_require__(68)
+  , inheritIfRequired = __webpack_require__(69)
   , dP                = __webpack_require__(9).f
   , gOPN              = __webpack_require__(43).f
-  , isRegExp          = __webpack_require__(70)
-  , $flags            = __webpack_require__(67)
+  , isRegExp          = __webpack_require__(71)
+  , $flags            = __webpack_require__(68)
   , $RegExp           = global.RegExp
   , Base              = $RegExp
   , proto             = $RegExp.prototype
@@ -11194,7 +11204,7 @@ if(__webpack_require__(10) && (!CORRECT_NEW || __webpack_require__(3)(function()
   __webpack_require__(12)(global, 'RegExp', $RegExp);
 }
 
-__webpack_require__(77)('RegExp');
+__webpack_require__(78)('RegExp');
 
 /***/ }),
 /* 278 */
@@ -11204,7 +11214,7 @@ __webpack_require__(77)('RegExp');
 
 __webpack_require__(117);
 var anObject    = __webpack_require__(1)
-  , $flags      = __webpack_require__(67)
+  , $flags      = __webpack_require__(68)
   , DESCRIPTORS = __webpack_require__(10)
   , TO_STRING   = 'toString'
   , $toString   = /./[TO_STRING];
@@ -11303,11 +11313,11 @@ $export($export.P, 'String', {
 
 var $export   = __webpack_require__(0)
   , toLength  = __webpack_require__(15)
-  , context   = __webpack_require__(79)
+  , context   = __webpack_require__(80)
   , ENDS_WITH = 'endsWith'
   , $endsWith = ''[ENDS_WITH];
 
-$export($export.P + $export.F * __webpack_require__(66)(ENDS_WITH), 'String', {
+$export($export.P + $export.F * __webpack_require__(67)(ENDS_WITH), 'String', {
   endsWith: function endsWith(searchString /*, endPosition = @length */){
     var that = context(this, searchString, ENDS_WITH)
       , endPosition = arguments.length > 1 ? arguments[1] : undefined
@@ -11395,10 +11405,10 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 // 21.1.3.7 String.prototype.includes(searchString, position = 0)
 
 var $export  = __webpack_require__(0)
-  , context  = __webpack_require__(79)
+  , context  = __webpack_require__(80)
   , INCLUDES = 'includes';
 
-$export($export.P + $export.F * __webpack_require__(66)(INCLUDES), 'String', {
+$export($export.P + $export.F * __webpack_require__(67)(INCLUDES), 'String', {
   includes: function includes(searchString /*, position = 0 */){
     return !!~context(this, searchString, INCLUDES)
       .indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
@@ -11487,11 +11497,11 @@ __webpack_require__(13)('small', function(createHTML){
 
 var $export     = __webpack_require__(0)
   , toLength    = __webpack_require__(15)
-  , context     = __webpack_require__(79)
+  , context     = __webpack_require__(80)
   , STARTS_WITH = 'startsWith'
   , $startsWith = ''[STARTS_WITH];
 
-$export($export.P + $export.F * __webpack_require__(66)(STARTS_WITH), 'String', {
+$export($export.P + $export.F * __webpack_require__(67)(STARTS_WITH), 'String', {
   startsWith: function startsWith(searchString /*, position = 0 */){
     var that   = context(this, searchString, STARTS_WITH)
       , index  = toLength(Math.min(arguments.length > 1 ? arguments[1] : undefined, that.length))
@@ -12243,19 +12253,19 @@ module.exports = "<div class=\"mat-typography\">\r\n    <h2 md-dialog-title>Conf
 /* 329 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar color=\"primary\">Add Heats</md-toolbar>\r\n<md-card class=\"styled-card\">\r\n    <section>\r\n        <md-input-container class=\"mat-input-container\">\r\n            <input mdInput [(ngModel)]=\"heat.name\" placeholder=\"Name\" />\r\n        </md-input-container>\r\n        <md-input-container class=\"mat-input-container\">\r\n            <input mdInput [mdDatepicker]=\"date\" [(ngModel)]=\"heat.date\" placeholder=\"Date\" />\r\n            <button mdSuffix [mdDatepickerToggle]=\"date\"></button>\r\n        </md-input-container>\r\n        <md-input-container class=\"mat-input-container\">\r\n            <input mdInput [(ngModel)]=\"heat.time\" placeholder=\"Time 24hours\" />\r\n        </md-input-container>\r\n        <md-input-container class=\"mat-input-container\">\r\n            <input mdInput [(ngModel)]=\"heat.slots\" placeholder=\"# of Slots Available\" />\r\n        </md-input-container>\r\n    </section>\r\n    <button class=\"styled-button\" md-raised-button color=\"primary\" (click)=\"addHeat()\">Add Heat</button>\r\n</md-card>";
+module.exports = "<div class=\"ui modal\" [id]=\"modalId\" *ngIf=\"heatService.editHeat | async\">\r\n    <md-toolbar color=\"primary\">Add Heats</md-toolbar>\r\n    <md-card class=\"styled-card\">\r\n        <md-card-content>\r\n            <section>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heat.name\" placeholder=\"Name\" />\r\n                </md-input-container>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input type=\"datetime-local\" mdInput [(ngModel)]=\"heat.date\" placeholder=\"Time 24hours\" />\r\n                </md-input-container>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heat.slots\" placeholder=\"# of Slots Available\" />\r\n                </md-input-container>\r\n            </section>\r\n            <button class=\"styled-button\" md-raised-button color=\"primary\" (click)=\"addHeat()\">Add Heat</button>\r\n        </md-card-content>\r\n    </md-card>\r\n</div>";
 
 /***/ }),
 /* 330 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"ui modal\" [id]=\"modalId\" *ngIf=\"heatService.editHeat | async\">\r\n    <md-toolbar>Update Heat</md-toolbar>\r\n    <md-card class=\"input-card\">\r\n        <h3 placeholder=\"heat.name\">Heat Name: {{heatService.editHeat.value.name}}</h3>\r\n        <md-card-content>\r\n            <section>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heatService.editHeat.value.name\" placeholder=\"Name\" />                    \r\n                </md-input-container>                \r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heatService.editHeat.value.slots\" placeholder=\"# of Slots Available\" />\r\n                </md-input-container>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [mdDatepicker]=\"date\" [(ngModel)]=\"heatService.editHeat.value.date\" placeholder=\"Date\" />\r\n                    <button mdSuffix [mdDatepickerToggle]=\"date\"></button>\r\n                </md-input-container>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heatService.editHeat.value.time\" placeholder=\"Time 24hours\" />\r\n                </md-input-container>\r\n                <!--<section class=\"time-sliders\">\r\n                    <h4>Hours</h4>\r\n                    <md-slider class=\"slider-margin\" [max]=\"23\" [min]=\"0\" [step]=\"1\" [thumb-label]=\"true\"\r\n                               [tick-interval]=\"1\" [value]=\"0\" [(ngModel)]=\"hourvalue\" placeholder=\"Hour\">\r\n                    </md-slider>\r\n                    <h4>Minutes</h4>\r\n                    <md-slider class=\"slider-margin\" [max]=\"45\" [min]=\"0\" [step]=\"15\" [thumb-label]=\"true\"\r\n                               [tick-interval]=\"15\" [value]=\"0\" [(ngModel)]=\"minutevalue\">\r\n                    </md-slider>\r\n                    <h4>{{hourvalue | number: '2.0-0'}}:{{minutevalue | number: '2.0-0'}}</h4>\r\n                </section>-->\r\n                <md-datepicker #date></md-datepicker>\r\n            </section>\r\n            <button md-raised-button color=\"primary\" (click)=\"editHeat()\">Update Heat</button>\r\n        </md-card-content>\r\n    </md-card>\r\n</div>";
+module.exports = "<div class=\"ui modal\" [id]=\"modalId\" *ngIf=\"heatService.editHeat | async\">\r\n    <md-toolbar>Update Heat</md-toolbar>\r\n    <md-card class=\"input-card\">\r\n        <h3 placeholder=\"heat.name\">Heat Name: {{heatService.editHeat.value.name}}</h3>\r\n        <md-card-content>\r\n            <section>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heatService.editHeat.value.name\" placeholder=\"Name\" />                    \r\n                </md-input-container>                \r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input mdInput [(ngModel)]=\"heatService.editHeat.value.slots\" placeholder=\"# of Slots Available\" />\r\n                </md-input-container>\r\n                <md-input-container class=\"mat-input-container\">\r\n                    <input type=\"datetime-local\" mdInput [(ngModel)]=\"heatService.editHeat.value.date\" placeholder=\"Time 24hours\" />\r\n                </md-input-container>  \r\n            </section>\r\n            <button md-raised-button color=\"primary\" (click)=\"heatService.updateHeat()\">Update Heat</button>\r\n        </md-card-content>\r\n    </md-card>\r\n</div>";
 
 /***/ }),
 /* 331 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-list>\r\n    <h3 md-subheader>Heats</h3>\r\n    <div >\r\n        <md-list-item *ngFor=\"let heat of heats\" \r\n            [class.selected]=\"isSelected(heat)\">\r\n            <h4 class=\"heat-card\"> {{heat.name}}  Heat</h4>\r\n            <p class=\"heat-card\"> {{heat.date | date: 'jm'}}</p>\r\n            <p class=\"heat-card\"> {{heat.slots}} Slots</p>\r\n            <button (click)=\"onSelect(heat)\" md-raised-button color=\"accent\">Edit</button>\r\n            <button (click)=\"deleteHeat(id)\" md-raised-button color=\"warn\">Delete</button>\r\n        </md-list-item>\r\n    </div>\r\n</md-list>";
+module.exports = "<md-list>\r\n    <h3 md-subheader>Heats</h3>\r\n    <div >\r\n        <md-list-item *ngFor=\"let heat of heats\" \r\n            [class.selected]=\"isSelected(heat)\">\r\n            <h4 class=\"heat-card\"> {{heat.name}}  Heat</h4>\r\n            <p class=\"heat-card\"> {{heat.date | date: yMd}}</p>\r\n            <p class=\"heat-card\"> {{heat.date | date: 'jm'}}</p>\r\n            <p class=\"heat-card\"> {{heat.slots}} Slots</p>\r\n            <button (click)=\"onSelect(heat)\" md-raised-button color=\"accent\">Edit</button>\r\n            <button (click)=\"deleteHeat(id)\" md-raised-button color=\"warn\">Delete</button>\r\n        </md-list-item>\r\n    </div>\r\n</md-list>";
 
 /***/ }),
 /* 332 */
@@ -12279,7 +12289,7 @@ module.exports = "<md-toolbar color=\"primary\">Register for Heat</md-toolbar>\r
 /* 335 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar color=\"primary\">People</md-toolbar>\r\n<person-add></person-add>\r\n<div class=\"table-container mat-elevation-z8\">\r\n    <div>\r\n        <md-input-container floatPlaceholder=\"never\">\r\n            <input mdInput #filter placeholder=\"Filter Names\" />\r\n        </md-input-container>\r\n    </div>    \r\n    <md-table #table [dataSource]=\"dataSource\" mdSort>\r\n        <ng-container cdkColumnDef=\"firstName\">\r\n            <md-header-cell *cdkHeaderCellDef md-sort-header> First Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\"> {{row.firstName}} </md-cell> \r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"lastName\">\r\n            <md-header-cell *cdkHeaderCellDef> Last Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.lastName}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"sex\">\r\n            <md-header-cell *cdkHeaderCellDef> Gender </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.sex}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"userName\">\r\n            <md-header-cell *cdkHeaderCellDef> User Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.userName}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"email\">\r\n            <md-header-cell *cdkHeaderCellDef> Email </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.email}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"menu\">\r\n            <md-header-cell *cdkHeaderCellDef></md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">\r\n                <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n                    <md-icon>more_vert</md-icon>\r\n                </button>\r\n                <md-menu #menu=\"mdMenu\" [overlapTrigger]=\"false\">\r\n                    <button md-menu-item (click)=\"deletePerson(row)\">Delete</button>\r\n                </md-menu>\r\n            </md-cell>\r\n        </ng-container>\r\n        <md-header-row *cdkHeaderRowDef=\"displayedColumns\"></md-header-row>\r\n        <md-row *cdkRowDef=\"let row; columns: displayedColumns;\"></md-row>\r\n    </md-table>\r\n    <md-paginator #paginator [length]=\"dataSource.filteredData.length\"\r\n                  [pageIndex]=\"0\" [pageSize]=\"25\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></md-paginator>\r\n</div>\r\n\r\n";
+module.exports = "<md-toolbar color=\"primary\">People</md-toolbar>\r\n<person-add></person-add>\r\n<div class=\"table-container mat-elevation-z8\">\r\n    <div>\r\n        <md-input-container floatPlaceholder=\"never\">\r\n            <input mdInput #filter placeholder=\"Filter Names\" />\r\n        </md-input-container>\r\n    </div>    \r\n    <md-table #table [dataSource]=\"dataSource\" mdSort>\r\n        <ng-container cdkColumnDef=\"firstName\">\r\n            <md-header-cell *cdkHeaderCellDef md-sort-header> First Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\"> {{row.firstName}} </md-cell> \r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"lastName\">\r\n            <md-header-cell *cdkHeaderCellDef> Last Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.lastName}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"sex\">\r\n            <md-header-cell *cdkHeaderCellDef> Gender </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.sex}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"userName\">\r\n            <md-header-cell *cdkHeaderCellDef> User Name </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.userName}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"email\">\r\n            <md-header-cell *cdkHeaderCellDef> Email </md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">{{row.email}}</md-cell>\r\n        </ng-container>\r\n        <ng-container cdkColumnDef=\"menu\">\r\n            <md-header-cell *cdkHeaderCellDef></md-header-cell>\r\n            <md-cell *cdkCellDef=\"let row\">\r\n                <button md-icon-button [mdMenuTriggerFor]=\"menu\">\r\n                    <md-icon>more_vert</md-icon>\r\n                </button>\r\n                <md-menu #menu=\"mdMenu\" [overlapTrigger]=\"false\">\r\n                    <button md-menu-item (click)=\"deletePerson(row.id)\">Delete</button>\r\n                </md-menu>\r\n            </md-cell>\r\n        </ng-container>\r\n        <md-header-row *cdkHeaderRowDef=\"displayedColumns\"></md-header-row>\r\n        <md-row *cdkRowDef=\"let row; columns: displayedColumns;\"></md-row>\r\n    </md-table>\r\n    <md-paginator #paginator [length]=\"dataSource.filteredData.length\"\r\n                  [pageIndex]=\"0\" [pageSize]=\"25\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></md-paginator>\r\n</div>\r\n\r\n";
 
 /***/ }),
 /* 336 */

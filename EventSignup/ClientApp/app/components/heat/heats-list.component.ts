@@ -63,12 +63,11 @@ export class HeatsListComponent implements OnInit {
     }
 
     deleteHeat(id) {
-        //const dialogRef = this.dialog.open(ConfirmDialogComponent);
-        //dialogRef.afterClosed().subscribe(result => {
-        //    if (result === '1') {
-        //        this.heatService.deleteHeat();
-        //    }
-        //});
-        this.heatService.deleteHeat();
+        const dialogRef = this.dialog.open(ConfirmDialogComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === '1') {
+                this.heatService.deleteHeat();
+            }
+        });        
     }    
 }

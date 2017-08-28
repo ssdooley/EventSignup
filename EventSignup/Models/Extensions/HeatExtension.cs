@@ -66,6 +66,9 @@ namespace EventSignup.Web.Models.Extensions
                 var heat = await db.Heats.FindAsync(model.id);
 
                 heat.Name = model.name;
+                heat.Slots = model.slots;
+                heat.Time = model.time;
+                heat.Date = model.date;
 
                 await db.SaveChangesAsync();
             }

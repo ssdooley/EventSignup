@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +17,7 @@ export class HeatService {
         return this.heatsSubject.value;
     }
 
-    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService) { }
+    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService, private router: Router) { }
 
     editHeat = new BehaviorSubject<Heat>(new Heat());
 
@@ -50,7 +51,9 @@ export class HeatService {
     }
 
     addHeat(model: Heat) {
-        let body = JSON.stringify(model.id);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let body = JSON.stringify(model);
 
         return this.http.post('/api/Heat/AddHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)
@@ -73,6 +76,7 @@ export class HeatService {
             .subscribe(res => {
                 this.getHeats();
                 this.toaster.sendSuccessMessage(this.editHeat.value.name + ' ' + this.editHeat.value.time + ' successfully updated');
+                this.router.navigate(['/admin/heats']);
             },
             error => {
                 this.toaster.sendErrorMessage(error);

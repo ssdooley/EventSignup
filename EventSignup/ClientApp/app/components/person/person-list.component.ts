@@ -44,11 +44,11 @@ export class PeopleListComponent {
             });
     }
 
-    deletePerson() {
+    deletePerson(id: number) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent);
         dialogRef.afterClosed().subscribe(result => {
             if (result === '1') {
-                this.personService.deletePerson(this.person.id);
+                this.personService.deletePerson(id);
             }
         });
     }

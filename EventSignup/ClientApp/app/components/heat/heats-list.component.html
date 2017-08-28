@@ -4,6 +4,7 @@
         <md-list-item *ngFor="let heat of heats" 
             [class.selected]="isSelected(heat)">
             <h4 class="heat-card"> {{heat.name}}  Heat</h4>
+            <p class="heat-card"> {{heat.date | date: yMd}}</p>
             <p class="heat-card"> {{heat.date | date: 'jm'}}</p>
             <p class="heat-card"> {{heat.slots}} Slots</p>
             <button (click)="onSelect(heat)" md-raised-button color="accent">Edit</button>
