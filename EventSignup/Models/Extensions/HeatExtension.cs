@@ -17,9 +17,10 @@ namespace EventSignup.Web.Models.Extensions
                 var model = db.Heats.Include("PeopleHeats.Person").Select(x => new HeatModel
                 {
                     id = x.Id,
-                    date = x.Date,
+                    date = x.HeatTime.Date,
                     name = x.Name,
-                    time = x.Time,
+                    hour = x.HeatTime.Hour,
+                    minute = x.HeatTime.Minute,
                     slots = x.Slots,
                     peopleHeats = x.PeopleHeats.Select(y => new PersonHeatModel
                     {
@@ -49,7 +50,7 @@ namespace EventSignup.Web.Models.Extensions
                 var heat = new Heat
                 {
                     Name = model.name,
-                    Date = model.date,
+                    HeatTime = model.dateTime,
                     Id = model.id,
                     Slots = model.slots
                 };
@@ -67,8 +68,7 @@ namespace EventSignup.Web.Models.Extensions
 
                 heat.Name = model.name;
                 heat.Slots = model.slots;
-                heat.Time = model.time;
-                heat.Date = model.date;
+                heat.HeatTime = model.dateTime;
 
                 await db.SaveChangesAsync();
             }

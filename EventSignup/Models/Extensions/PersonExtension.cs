@@ -31,9 +31,8 @@ namespace EventSignup.Web.Models.Extensions
                         heat = new HeatModel
                         {
                             id = y.HeatId,
-                            date = y.Heat.Date,
+                            date = y.Heat.HeatTime,
                             name = y.Heat.Name,
-                            time = y.Heat.Time,
                             slots = y.Heat.Slots
                         }
 

@@ -18,9 +18,9 @@ namespace EventSignup.Web.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IEnumerable<PersonModel>> GetPeople()
+        public async Task<IEnumerable<PersonModel>> GetPerson()
         {
-            return await db.GetPeople();
+            return await db.GetPerson();
         }
 
         [HttpGet("[action]")]

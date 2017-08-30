@@ -2,6 +2,7 @@
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HeatService } from '../../services/heat.service';
 import { Heat } from '../../models/heat.model';
+import { TimeService } from '../../services/time.service';
 
 @Component({
     selector: 'heat-edit',
@@ -13,7 +14,7 @@ export class HeatEditComponent {
     heat: Heat = new Heat();
 
 
-    constructor(private route: ActivatedRoute, private heatService: HeatService) {
+    constructor(private route: ActivatedRoute, private heatService: HeatService, private time: TimeService) {
         heatService.heats.subscribe(heats => {
             this.heats = heats;
         });

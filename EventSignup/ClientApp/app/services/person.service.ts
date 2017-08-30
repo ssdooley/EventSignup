@@ -27,10 +27,18 @@ export class PersonService {
     person = this.personSubject.asObservable();
     people = this.peopleSubject.asObservable();
     newPerson = this.newPersonSubject.asObservable();
+    behaviorPerson = new BehaviorSubject<Person>(new Person());
+
     personHeat = new BehaviorSubject<PersonHeat>(new PersonHeat());
 
     setPerson(person: Person): void {
         this.personSubject.next(person);
+    }
+
+    getPerson(id: number): Observable<Person> {
+        return this.http.get('api/Person/GetPerson/' + id)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     getAllPeople(): void {
@@ -65,24 +73,19 @@ export class PersonService {
         }
     }
 
-    editPerson(model: Person) {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        let body = JSON.stringify(model);
+    editPerson() {
+        let body = JSON.stringify(this.behaviorPerson.value);
 
-        if (this.validatePerson(model)) {
-            this.http.post('/api/Person/EditPerson', body, options)
-                .map(res => {
-                    return res;
-                }).catch(this.handleError)
+        return this.http.post('/api/Person/EditPerson', body, this.coreApi.getRequestOptions())
+                .map(this.coreApi.extractData)
+                .catch(this.coreApi.handleError)
                 .subscribe(res => {
-                    this.toaster.sendSuccessMessage(`${model.userName} successfully updated`);
+                    this.toaster.sendSuccessMessage(this.behaviorPerson.value.userName + ' successfully updated');
                 },
                 error => {
                     this.toaster.sendErrorMessage(error);
                 });
         }
-    }
 
     deletePerson(id: number) {
         let body = JSON.stringify(id);

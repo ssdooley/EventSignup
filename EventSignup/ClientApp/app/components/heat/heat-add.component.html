@@ -6,14 +6,22 @@
                 <md-input-container class="mat-input-container">
                     <input mdInput [(ngModel)]="heat.name" placeholder="Name" />
                 </md-input-container>
-                <md-input-container class="mat-input-container">
-                    <input type="datetime-local" mdInput [(ngModel)]="heat.date" placeholder="Time 24hours" />
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="picker" placeholder="Date" [(ngModel)]="heat.date" />
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
                 </md-input-container>
+                <md-datepicker #picker></md-datepicker>
+                <md-select placeholder="hour" [(ngModel)]="heat.hour">
+                    <md-option *ngFor="let hour of time.hours" [value]="hour">{{hour | number: '2.0-0'}}</md-option>
+                </md-select>
+                <md-select placeholder="minute" [(ngModel)]="heat.minute">
+                    <md-option *ngFor="let minute of time.minutes" [value]="minute">{{minute | number: '2.0-0'}}</md-option>
+                </md-select>
                 <md-input-container class="mat-input-container">
                     <input mdInput [(ngModel)]="heat.slots" placeholder="# of Slots Available" />
-                </md-input-container>
+                </md-input-container>               
             </section>
             <button class="styled-button" md-raised-button color="primary" (click)="addHeat()">Add Heat</button>
-        </md-card-content>
+        </md-card-content>        
     </md-card>
 </div>

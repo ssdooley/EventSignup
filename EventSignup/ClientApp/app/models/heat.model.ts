@@ -5,6 +5,8 @@ export class Heat {
     name: string;
     date: Date;
     time: Date;
+    hour: number;
+    minute: number;
     slots: number;
     peopleHeats: Array<PersonHeat>;
 }

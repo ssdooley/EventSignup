@@ -11,6 +11,7 @@ import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from './components/home/home.component';
 import { PrismComponent } from './components/prism/prism.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
+import { TimeService } from './services/time.service';
 
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminListComponent } from './components/admin/admin-list.component';
@@ -54,7 +55,8 @@ export const sharedConfig: NgModule = {
         ToasterService,
         HeatService,
         PersonService,
-        CoreApiService
+        CoreApiService,
+        TimeService
     ],
     imports: [
         AppMaterialModule,

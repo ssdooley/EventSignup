@@ -83,8 +83,8 @@ export class HeatService {
             });
     }
 
-    deleteHeat() {
-        let body = JSON.stringify(this.editHeat.value.id);
+    deleteHeat(id: number) {
+        let body = JSON.stringify(id);
 
         return this.http.post('/api/Heat/DeleteHeat', body, this.coreApi.getRequestOptions())
             .map(this.coreApi.extractData)

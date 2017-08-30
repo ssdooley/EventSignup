@@ -62,11 +62,11 @@ export class HeatsListComponent implements OnInit {
         this.router.navigate(['admin/heat-edit', heat.id]);
     }
 
-    deleteHeat(id) {
+    deleteHeat(id: number) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent);
         dialogRef.afterClosed().subscribe(result => {
             if (result === '1') {
-                this.heatService.deleteHeat();
+                this.heatService.deleteHeat(id);
             }
         });        
     }    

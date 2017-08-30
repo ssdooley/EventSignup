@@ -5,10 +5,10 @@
             [class.selected]="isSelected(heat)">
             <h4 class="heat-card"> {{heat.name}}  Heat</h4>
             <p class="heat-card"> {{heat.date | date: yMd}}</p>
-            <p class="heat-card"> {{heat.date | date: 'jm'}}</p>
+            <p class="heat-card"> {{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}}</p>
             <p class="heat-card"> {{heat.slots}} Slots</p>
             <button (click)="onSelect(heat)" md-raised-button color="accent">Edit</button>
-            <button (click)="deleteHeat(id)" md-raised-button color="warn">Delete</button>
+            <button (click)="deleteHeat(heat.id)" md-raised-button color="warn">Delete</button>
         </md-list-item>
     </div>
 </md-list>

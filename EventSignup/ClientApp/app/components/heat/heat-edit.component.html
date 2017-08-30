@@ -10,9 +10,17 @@
                 <md-input-container class="mat-input-container">
                     <input mdInput [(ngModel)]="heatService.editHeat.value.slots" placeholder="# of Slots Available" />
                 </md-input-container>
-                <md-input-container class="mat-input-container">
-                    <input type="datetime-local" mdInput [(ngModel)]="heatService.editHeat.value.date" placeholder="Time 24hours" />
-                </md-input-container>  
+                <md-select placeholder="hour" [(ngModel)]="heatService.editHeat.value.hour">
+                    <md-option *ngFor="let hour of time.hours" [value]="hour">{{hour | number: '2.0-0'}}</md-option>
+                </md-select>
+                <md-select placeholder="minute" [(ngModel)]="heatService.editHeat.value.minute">
+                    <md-option *ngFor="let minute of time.minutes" [value]="minute">{{minute | number: '2.0-0'}}</md-option>
+                </md-select>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="picker" placeholder="Date" [(ngModel)]="heatService.editHeat.value.date" />
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
             </section>
             <button md-raised-button color="primary" (click)="heatService.updateHeat()">Update Heat</button>
         </md-card-content>
