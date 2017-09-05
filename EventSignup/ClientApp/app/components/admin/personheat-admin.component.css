@@ -25,24 +25,22 @@
     align-content: space-around;
     flex-wrap: wrap;
     justify-content: flex-start;
-    width: 700px;
+    width: 750px;
 }
 
 @media (max-width: 800px)
 {
-    .person-heat-card .hide-first-name{
-        display: none;
-    }
-    .person-heat-card .hide-last-name{
-        display: none;
-    }
+   
     .person-heat-card .hide-email{
         display: none;
     }
     .person-heat-card .hide-gender{
         display: none;
     }
+    .person-heat-card .hide-scale {
+        display: none;
+    }
     .person-list {
-        width: auto;
+        width: 360px;
     }
 }

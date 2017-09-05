@@ -5,11 +5,10 @@
         <div class="person-list">
             <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">
                 <p>{{heat.name}}</p>
-                <p class="hide-first-name">{{personHeat.person.firstName}}</p>
-                <p class="hide-last-name">{{personHeat.person.lastName}}</p>
+                <p>{{personHeat.person.lastName}}, {{personHeat.person.firstName}}</p>
                 <p class="hide-email">{{personHeat.person.email}}</p>
                 <p class="hide-gender">{{personHeat.person.sex}}</p>
-                <p>{{personHeat.rxEvent}}</p>
+                <p class="hide-scale">{{personHeat.rxEvent}}</p>
                 <button md-raised-button color="accent" (click)="onSelect(personHeat)">Edit</button>
                 <button md-raised-button color="warn" (click)="deletePersonHeat(personHeat.id)">Delete</button> 
             </div>

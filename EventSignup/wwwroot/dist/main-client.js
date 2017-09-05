@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0c849b0b97a609f3026c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6f45d594c039da65ef21"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -11974,7 +11974,7 @@ exports = module.exports = __webpack_require__(16)(undefined);
 
 
 // module
-exports.push([module.i, ".heat-list {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-content: space-around;\r\n    flex-wrap: wrap;\r\n    justify-content: flex-start;\r\n}\r\n\r\n.heat-card p {\r\n    flex: 1 1 auto;\r\n}\r\n\r\n.person-heat-card {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-content: center;\r\n    align-items: flex-start;\r\n    justify-content: space-around;\r\n}\r\n\r\n.person-list {\r\n    flex: auto;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-content: space-around;\r\n    flex-wrap: wrap;\r\n    justify-content: flex-start;\r\n    width: 700px;\r\n}\r\n\r\n@media (max-width: 800px)\r\n{\r\n    .person-heat-card .hide-first-name{\r\n        display: none;\r\n    }\r\n    .person-heat-card .hide-last-name{\r\n        display: none;\r\n    }\r\n    .person-heat-card .hide-email{\r\n        display: none;\r\n    }\r\n    .person-heat-card .hide-gender{\r\n        display: none;\r\n    }\r\n    .person-list {\r\n        width: auto;\r\n    }\r\n}", ""]);
+exports.push([module.i, ".heat-list {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-content: space-around;\r\n    flex-wrap: wrap;\r\n    justify-content: flex-start;\r\n}\r\n\r\n.heat-card p {\r\n    flex: 1 1 auto;\r\n}\r\n\r\n.person-heat-card {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-content: center;\r\n    align-items: flex-start;\r\n    justify-content: space-around;\r\n}\r\n\r\n.person-list {\r\n    flex: auto;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-content: space-around;\r\n    flex-wrap: wrap;\r\n    justify-content: flex-start;\r\n    width: 750px;\r\n}\r\n\r\n@media (max-width: 800px)\r\n{\r\n   \r\n    .person-heat-card .hide-email{\r\n        display: none;\r\n    }\r\n    .person-heat-card .hide-gender{\r\n        display: none;\r\n    }\r\n    .person-heat-card .hide-scale {\r\n        display: none;\r\n    }\r\n    .person-list {\r\n        width: 360px;\r\n    }\r\n}", ""]);
 
 // exports
 
@@ -12447,7 +12447,7 @@ module.exports = "<md-toolbar>Admin</md-toolbar>\r\n<div >\r\n    <button router
 /* 329 */
 /***/ (function(module, exports) {
 
-module.exports = "<personheat-add></personheat-add>\r\n<div class=\"heat-list\">\r\n    <md-card *ngFor=\"let heat of heats\" class=\"heat-card\">\r\n        <md-card-header class=\"heat-list\"></md-card-header>\r\n        <div class=\"person-list\">\r\n            <div *ngFor=\"let personHeat of heat.peopleHeats\" class=\"person-heat-card\">\r\n                <p>{{heat.name}}</p>\r\n                <p class=\"hide-first-name\">{{personHeat.person.firstName}}</p>\r\n                <p class=\"hide-last-name\">{{personHeat.person.lastName}}</p>\r\n                <p class=\"hide-email\">{{personHeat.person.email}}</p>\r\n                <p class=\"hide-gender\">{{personHeat.person.sex}}</p>\r\n                <p>{{personHeat.rxEvent}}</p>\r\n                <button md-raised-button color=\"accent\" (click)=\"onSelect(personHeat)\">Edit</button>\r\n                <button md-raised-button color=\"warn\" (click)=\"deletePersonHeat(personHeat.id)\">Delete</button> \r\n            </div>\r\n        </div>\r\n    </md-card>\r\n</div>\r\n";
+module.exports = "<personheat-add></personheat-add>\r\n<div class=\"heat-list\">\r\n    <md-card *ngFor=\"let heat of heats\" class=\"heat-card\">\r\n        <md-card-header class=\"heat-list\"></md-card-header>\r\n        <div class=\"person-list\">\r\n            <div *ngFor=\"let personHeat of heat.peopleHeats\" class=\"person-heat-card\">\r\n                <p>{{heat.name}}</p>\r\n                <p>{{personHeat.person.lastName}}, {{personHeat.person.firstName}}</p>\r\n                <p class=\"hide-email\">{{personHeat.person.email}}</p>\r\n                <p class=\"hide-gender\">{{personHeat.person.sex}}</p>\r\n                <p class=\"hide-scale\">{{personHeat.rxEvent}}</p>\r\n                <button md-raised-button color=\"accent\" (click)=\"onSelect(personHeat)\">Edit</button>\r\n                <button md-raised-button color=\"warn\" (click)=\"deletePersonHeat(personHeat.id)\">Delete</button> \r\n            </div>\r\n        </div>\r\n    </md-card>\r\n</div>\r\n";
 
 /***/ }),
 /* 330 */
