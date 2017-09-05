@@ -1,5 +1,4 @@
-﻿<md-toolbar color="primary">People</md-toolbar>
-<person-add></person-add>
+﻿<person-add></person-add>
 <div class="table-container mat-elevation-z8">
     <div>
         <md-input-container floatPlaceholder="never">
@@ -35,6 +34,7 @@
                 </button>
                 <md-menu #menu="mdMenu" [overlapTrigger]="false">
                     <button md-menu-item (click)="deletePerson(row.id)">Delete</button>
+                    <button md-menu-item (click)="onSelect(row)">Edit</button>
                 </md-menu>
             </md-cell>
         </ng-container>

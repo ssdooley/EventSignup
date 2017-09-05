@@ -102,6 +102,12 @@ export class PersonService {
             });
     }
 
+    getPersonHeat(id: number):Observable<PersonHeat> {
+        let body = JSON.stringify(this.personHeat.value);
+        return this.http.get('api/Person/GetPersonHeat' + id)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     addPersonHeat() {
         let body = JSON.stringify(this.personHeat.value);
@@ -127,7 +133,7 @@ export class PersonService {
             .catch(this.coreApi.handleError)
             .subscribe(res => {
                 this.getAllPeople();
-                this.toaster.sendSuccessMessage(`${this.personHeat.value.heat} successfully updated ${this.personHeat.value.person}`);
+                this.toaster.sendSuccessMessage(`Heat successfully updated for ${this.personHeat.value.person.userName}`);
             },
             error => {
                 this.toaster.sendErrorMessage(error);

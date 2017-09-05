@@ -11,6 +11,9 @@ import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from './components/home/home.component';
 import { PrismComponent } from './components/prism/prism.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
+import { EditPersonDialogComponent } from './components/dialog/edit-person-dialog.component';
+import { EditPersonHeatDialogComponent } from './components/dialog/edit-personheat-dialog.component';
+
 import { TimeService } from './services/time.service';
 
 import { AdminComponent } from './components/admin/admin.component';
@@ -40,6 +43,8 @@ export const sharedConfig: NgModule = {
         AdminListComponent,
         PersonHeatAdminComponent,
         ConfirmDialogComponent,
+        EditPersonDialogComponent,
+        EditPersonHeatDialogComponent,
         HeatsComponent,
         HeatsListComponent,
         HeatEditComponent,
@@ -49,7 +54,10 @@ export const sharedConfig: NgModule = {
         PersonHeatAddComponent,
         PersonHeatEditComponent
     ],
-    entryComponents: [ConfirmDialogComponent],
+    entryComponents: [
+        ConfirmDialogComponent,
+        EditPersonHeatDialogComponent
+    ],
     providers: [
         ThemeService,
         ToasterService,
@@ -72,6 +80,7 @@ export const sharedConfig: NgModule = {
                     { path: 'personheat-add', component: PersonHeatAddComponent },
                     { path: 'personheat-edit', component: PersonHeatEditComponent },
                     { path: 'personheat-admin', component: PersonHeatAdminComponent },
+                    { path: 'edit-person-dialog', component: EditPersonDialogComponent },
                     { path: 'people-list', component: PeopleListComponent },
                 ]
             },

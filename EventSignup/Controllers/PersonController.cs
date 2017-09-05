@@ -29,6 +29,18 @@ namespace EventSignup.Web.Controllers
             return await db.GetAllPeople();
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<PersonHeatModel> GetPersonHeat([FromRoute]int id)
+        {
+            return await db.GetPersonHeat(id);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<PersonHeatModel>> GetPeopleHeats()
+        {
+            return await db.GetPeopleHeats();
+        }
+
         [HttpPost("[action]")]
         public async Task<ObjectResult> AddPerson([FromBody]PersonModel model)
         {

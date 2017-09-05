@@ -4,19 +4,6 @@
     align-content: space-around;
     flex-wrap: wrap;
     justify-content: flex-start;
-    padding: 2px;
-}
-
-.heat-card {
-    display: flex;
-    flex-direction: row;
-    align-content: space-around;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.heat-list .heat-card {
-    flex: 1 1 auto;
 }
 
 .heat-card p {
@@ -28,26 +15,34 @@
     flex-direction: row;
     align-content: center;
     align-items: flex-start;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
-    .person-heat-card p {
-        flex: 1 1 auto;
-    }
-
 .person-list {
+    flex: auto;
     display: flex;
     flex-direction: column;
     align-content: space-around;
     flex-wrap: wrap;
     justify-content: flex-start;
+    width: 700px;
 }
 
-    .person-list .person-heat-card {
-        flex: 1 1 auto;
+@media (max-width: 800px)
+{
+    .person-heat-card .hide-first-name{
+        display: none;
     }
-
-.ul .li {
-    display: inline-block;
+    .person-heat-card .hide-last-name{
+        display: none;
+    }
+    .person-heat-card .hide-email{
+        display: none;
+    }
+    .person-heat-card .hide-gender{
+        display: none;
+    }
+    .person-list {
+        width: auto;
+    }
 }

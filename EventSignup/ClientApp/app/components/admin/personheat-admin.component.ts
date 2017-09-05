@@ -11,12 +11,12 @@ import { PersonService } from '../../services/person.service';
 import { PersonHeat } from '../../models/person-heat.model';
 import { Person } from '../../models/person.model';
 import { ConfirmDialogComponent } from '../dialog/confirm-dialog.component';
+import { EditPersonHeatDialogComponent } from '../dialog/edit-personheat-dialog.component';
 
 @Component({
     selector: 'personheat-admin',
     templateUrl: 'personheat-admin.component.html',
-    styleUrls: ['personheat-admin.component.css'],
-    providers: [PersonService]
+    styleUrls: ['personheat-admin.component.css']
 })
 export class PersonHeatAdminComponent implements OnInit {
     personHeat = new PersonHeat();
@@ -25,6 +25,8 @@ export class PersonHeatAdminComponent implements OnInit {
     peopleHeats: Array<PersonHeat> = new Array<PersonHeat>();
     displayedColumns = ['firstName', 'lastName', 'email', 'sex', 'rxEvent']
     scales = ['RX', 'SCALED'];
+
+    private selectedId: number;
 
 
     constructor(private personService: PersonService, public dialog: MdDialog,
@@ -44,6 +46,22 @@ export class PersonHeatAdminComponent implements OnInit {
         this.personService.getAllPeople();
         this.heatService.getHeats();
     }
+
+    isSelected(personHeat: PersonHeat) {
+        return personHeat.id === this.selectedId;
+    }
+
+    onSelect(personHeat: PersonHeat) {
+        this.personService.personHeat.next(personHeat);
+        const dialogRef = this.dialog.open(EditPersonHeatDialogComponent)
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === '1') {
+                this.personService.getAllPeople();
+                this.heatService.getHeats();
+            }
+        });
+    }
+
 
     updatePersonHeat() {
         this.personService.editPersonHeat();

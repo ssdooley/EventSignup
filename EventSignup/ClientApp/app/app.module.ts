@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { sharedConfig } from './app.module.shared';
 import { MdDialog } from '@angular/material';
-import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
 
 @NgModule({
     bootstrap: sharedConfig.bootstrap,
@@ -21,7 +20,7 @@ import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.compo
         { provide: 'ORIGIN_URL', useValue: location.origin },
         ...sharedConfig.providers
     ],
-    entryComponents: [ConfirmDialogComponent]
+    entryComponents: [...sharedConfig.entryComponents]
 })
 export class AppModule {
 }

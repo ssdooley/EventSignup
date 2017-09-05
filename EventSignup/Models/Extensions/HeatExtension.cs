@@ -34,6 +34,10 @@ namespace EventSignup.Web.Models.Extensions
                             userName = y.Person.UserName,
                             sex = y.Person.Sex,
                             email = y.Person.Email
+                        },
+                        heat = new HeatModel
+                        {
+                            id = y.HeatId
                         }
                     }).AsEnumerable()
 

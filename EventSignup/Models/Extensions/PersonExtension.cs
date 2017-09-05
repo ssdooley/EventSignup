@@ -80,6 +80,70 @@ namespace EventSignup.Web.Models.Extensions
             });
         }
 
+        public static Task<IEnumerable<PersonHeatModel>> GetPeopleHeats(this AppDbContext db)
+        {
+            return Task.Run(() =>
+            {
+                var model = db.PeopleHeats
+                    .Include(x => x.Heat)
+                    .Include(x => x.Person)
+                    .Select(x => new PersonHeatModel
+                    {
+                        id = x.Id,
+                        heat = new HeatModel
+                        {
+                            id = x.HeatId,
+                            date = x.Heat.HeatTime,
+                            name = x.Heat.Name,
+                            slots = x.Heat.Slots
+                        },
+                        person = new PersonModel
+                        {
+                            id = x.Id,
+                            firstName = x.Person.FirstName,
+                            lastName = x.Person.LastName,
+                            sex = x.Person.Sex,
+                            userName = x.Person.UserName,
+                            email = x.Person.Email,
+                        }
+                    }).AsEnumerable();
+
+                return model;
+            });
+        }
+
+        public static async Task<PersonHeatModel>GetPersonHeat(this AppDbContext db, int id)
+        {
+            var personHeat = await db.PeopleHeats
+                .Include(x => x.Heat)
+                .Include(x => x.Person)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var model = new PersonHeatModel
+            {
+                id = personHeat.Id,
+                rxEvent = personHeat.RxEvent,
+                heat = new HeatModel
+                {
+                    id = personHeat.Heat.Id,
+                    date = personHeat.Heat.HeatTime,
+                    name = personHeat.Heat.Name,
+                    slots = personHeat.Heat.Slots
+                },
+                person = new PersonModel
+                {
+                    id = personHeat.Person.Id,
+                    firstName = personHeat.Person.FirstName,
+                    lastName = personHeat.Person.LastName,
+                    email = personHeat.Person.Email,
+                    sex = personHeat.Person.Sex,
+                    userName = personHeat.Person.UserName,
+                }
+            };
+
+            return model;
+        }
+
         public static async Task AddPerson(this AppDbContext db, PersonModel model)
         {
             if (await model.Validate(db))
@@ -157,8 +221,9 @@ namespace EventSignup.Web.Models.Extensions
         {
             if (await model.ValidatePersonHeat(db))
             {
-                var personHeat = await db.PeopleHeats.FindAsync(model.heat.id);
-                personHeat.Id = model.id;
+                var personHeat = await db.PeopleHeats.FindAsync(model.id);
+                personHeat.RxEvent = model.rxEvent;
+                personHeat.HeatId = model.heat.id;
                 await db.SaveChangesAsync();
             }
         }
@@ -219,7 +284,17 @@ namespace EventSignup.Web.Models.Extensions
 
         public static async Task<bool> ValidatePersonHeat(this PersonHeatModel model, AppDbContext db)
         {
-            if (model.person.id < 0)
+            if (model.heat == null)
+            {
+                throw new Exception("Heat must be selected");
+            }
+
+            if (string.IsNullOrEmpty(model.rxEvent))
+            {
+                throw new Exception("Event Type must be selected");
+            }
+
+            if (model.person.id > 0)
             {
                 var check = await db.PeopleHeats
                     .FirstOrDefaultAsync(x => x.Id == model.person.id);
