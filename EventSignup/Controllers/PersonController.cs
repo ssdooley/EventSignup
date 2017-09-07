@@ -55,6 +55,12 @@ namespace EventSignup.Web.Controllers
             return Accepted("/api/Person/EditPerson", model);
         }
 
+        [HttpGet("[action]/{email}")]
+        public async Task<PersonModel> FindPerson([FromRoute]string email)
+        {
+            return await db.FindPerson(email);
+        }
+
         [HttpPost("[action]")]
         public async Task<ObjectResult> DeletePerson([FromBody]int id)
         {

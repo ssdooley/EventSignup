@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/of';
 import { Person } from '../models/person.model';
 import { ToasterService } from './toaster.service';
 import { HeatService } from './heat.service';
@@ -73,6 +74,18 @@ export class PersonService {
         }
     }
 
+    findPerson(email: string): Observable<Person> {
+        return this.http.get('/api/person/findPerson/' + email)
+            .map(res => {
+                try {
+                    return res.json() || {};
+                } catch (error) {
+                    return res;
+                }
+            })
+            .catch(this.handleError);
+    }
+
     editPerson() {
         let body = JSON.stringify(this.behaviorPerson.value);
 
@@ -116,7 +129,7 @@ export class PersonService {
             .map(this.coreApi.extractData)
             .catch(this.coreApi.handleError)
             .subscribe(res => {
-                this.toaster.sendSuccessMessage(`${this.personHeat.value.person.userName} successfully added to heat at ${this.personHeat.value.heat.time}`);
+                this.toaster.sendSuccessMessage(`${this.personHeat.value.person.email} was successfully added to the ${this.personHeat.value.heat.name} heat`);
                 this.personHeat.next(new PersonHeat());
                 this.heatService.getHeats();
             },

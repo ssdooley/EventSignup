@@ -112,6 +112,24 @@ namespace EventSignup.Web.Models.Extensions
             });
         }
 
+        public static async Task<PersonModel> FindPerson(this AppDbContext db, string email)
+        {
+            var person =  await db.People.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+
+            if (person == null)
+            {
+                return new PersonModel();
+            }
+
+            var model = new PersonModel
+            {
+                id = person.Id,
+                email = person.Email
+            };
+
+            return model;
+        }
+
         public static async Task<PersonHeatModel>GetPersonHeat(this AppDbContext db, int id)
         {
             var personHeat = await db.PeopleHeats

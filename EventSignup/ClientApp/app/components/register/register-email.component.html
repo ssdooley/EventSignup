@@ -1,0 +1,28 @@
+﻿<form>
+    <md-input-container>
+        <input mdInput placeholder="Email" [formControl]="emailFormControl" [ngModel]="personHeat.person" #filter/>
+    </md-input-container>
+</form>
+<button md-button *ngIf="!isRegistered">Register</button>
+<div *ngIf="!isRegistered">
+    <h1 *ngIf="emailFormControl.hasError('required')">Please enter Your Email address </h1>
+    <h1 *ngIf="emailFormControl.hasError('pattern')">Please enter a valid email address</h1>
+</div>
+<div *ngIf="isRegistered">
+    <md-toolbar color="primary">Register for Heat</md-toolbar>
+    <md-card class="styled-card">
+        <md-card-content>
+            <section>
+                <h1>{{personCheck.value.email}}</h1>
+                <md-select placeholder="Heat" [(ngModel)]="personHeat.heat">
+                    <md-option *ngFor="let heat of heats" [value]="heat">{{heat.name}}</md-option>
+                </md-select>
+                <md-select placeholder="Rx/Scaled" [(ngModel)]="personHeat.rxEvent">
+                    <md-option *ngFor="let scale of scales" [value]="scale">{{scale}}</md-option>
+                </md-select>
+            </section>
+            <button class="styled-button" md-raised-button color="primary" (click)="addPersonHeat()">Assign Heat</button>
+        </md-card-content>
+    </md-card>
+
+</div>

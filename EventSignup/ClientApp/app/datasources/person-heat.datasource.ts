@@ -29,7 +29,8 @@ export class PersonHeatDataSource extends DataSource<any> {
 
         return Observable.merge(...displayDataChanges).map(() => {
             this.filteredData = this.personService.personData.slice().filter((person: Person) => {
-                const searchStr = person.firstName.toLowerCase();
+                const searchStr = (person.firstName + person.lastName + person.email)
+                    .toLowerCase();
                 return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
             });
 
@@ -54,6 +55,8 @@ export class PersonHeatDataSource extends DataSource<any> {
         }
 
         if (this.sort.active.toLowerCase() === 'firstName' ||
+            this.sort.active.toLowerCase() === 'userName' ||
+            this.sort.active.toLowerCase() === 'email' ||
             this.sort.active.toLowerCase() === 'lastName') {
             this.sort.active = '';
             this.sort.direction = '';

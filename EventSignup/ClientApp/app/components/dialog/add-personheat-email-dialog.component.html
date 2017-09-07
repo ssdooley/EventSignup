@@ -1,0 +1,21 @@
+﻿<div class="ui modal" [id]="modalId" *ngIf="personService.personHeat | async">
+    <md-toolbar>Update Person Assigned to Heat</md-toolbar>
+    <md-card class="input-card">
+        <md-card-content>
+            <section> 
+                <h1 (ngModel)="personService.personHeat.value.person.userName">{{personService.personHeat.value.person.userName}}</h1>
+                <!--<md-select placeholder="Name" [(ngModel)]="personService.personHeat.value.person.userName">
+                    <md-option [value]="name">{{personService.personHeat.value.person.userName}}</md-option>
+                </md-select>-->
+                <md-select placeholder="Heat" (ngModel)="personService.personHeat.value.heat.id">
+                    <md-option *ngFor="let heat of heats" [value]="heat.id">{{heat.name}}</md-option>
+                </md-select>
+                <md-select placeholder="Rx/Scaled" (ngModel)="personService.personHeat.value.rxEvent">
+                    <md-option *ngFor="let scale of scales" [value]="scale">{{scale}}</md-option>
+                </md-select>
+            </section>
+            <button md-raised-button md-dialog-close="1" color="primary" (click)="personService.editPersonHeat()">Update Heat</button>
+            <button md-raised-button md-dialog-close="0" color="warn">Cancel</button>
+        </md-card-content>
+    </md-card>
+</div>

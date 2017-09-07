@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppMaterialModule } from './app.module.material';
 import { CoreApiService } from './services/core-api.service';
@@ -13,6 +14,7 @@ import { PrismComponent } from './components/prism/prism.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
 import { EditPersonDialogComponent } from './components/dialog/edit-person-dialog.component';
 import { EditPersonHeatDialogComponent } from './components/dialog/edit-personheat-dialog.component';
+import { AddPersonHeatEmailDialogComponent } from './components/dialog/add-personheat-email-dialog.component';
 
 import { TimeService } from './services/time.service';
 
@@ -32,6 +34,8 @@ import { PersonAddComponent } from './components/person/person-add.component';
 import { PersonHeatAddComponent } from './components/person/personheat-add.component';
 import { PersonHeatEditComponent } from './components/person/personheat-edit.component';
 
+import { RegisterEmailComponent } from './components/register/register-email.component';
+import { EmailFilterPipe } from './components/filter/email.filter';
 
 export const sharedConfig: NgModule = {
     bootstrap: [ AppComponent ],
@@ -45,6 +49,7 @@ export const sharedConfig: NgModule = {
         ConfirmDialogComponent,
         EditPersonDialogComponent,
         EditPersonHeatDialogComponent,
+        AddPersonHeatEmailDialogComponent,
         HeatsComponent,
         HeatsListComponent,
         HeatEditComponent,
@@ -52,11 +57,14 @@ export const sharedConfig: NgModule = {
         PeopleListComponent,
         PersonAddComponent,
         PersonHeatAddComponent,
-        PersonHeatEditComponent
+        PersonHeatEditComponent,
+        RegisterEmailComponent,
+        EmailFilterPipe
     ],
     entryComponents: [
         ConfirmDialogComponent,
-        EditPersonHeatDialogComponent
+        EditPersonHeatDialogComponent,
+        AddPersonHeatEmailDialogComponent
     ],
     providers: [
         ThemeService,
@@ -68,6 +76,8 @@ export const sharedConfig: NgModule = {
     ],
     imports: [
         AppMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
@@ -85,6 +95,7 @@ export const sharedConfig: NgModule = {
                 ]
             },
             { path: 'person-add', component: PersonAddComponent },
+            { path: 'register-email', component: RegisterEmailComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
