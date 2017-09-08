@@ -22,6 +22,7 @@ namespace EventSignup.Web.Models.Extensions
                     hour = x.HeatTime.Hour,
                     minute = x.HeatTime.Minute,
                     slots = x.Slots,
+                    available = x.Slots - x.PeopleHeats.Count,
                     peopleHeats = x.PeopleHeats.Select(y => new PersonHeatModel
                     {
                         id = y.Id,
@@ -45,6 +46,24 @@ namespace EventSignup.Web.Models.Extensions
 
                 return model.AsEnumerable();
             });
+        }
+
+        public static async  Task<HeatModel> GetHeat(this AppDbContext db, int id)
+        {
+            var heat = await db.Heats.Include(x => x.PeopleHeats).FirstOrDefaultAsync(x => x.Id == id);
+
+            var model = new HeatModel
+            {
+                id = heat.Id,
+                date = heat.HeatTime.Date,
+                hour = heat.HeatTime.Hour,
+                minute = heat.HeatTime.Minute,
+                name = heat.Name,
+                slots = heat.Slots,
+                available = heat.Slots - heat.PeopleHeats.Count
+            };
+
+            return model;
         }
 
         public static async Task AddHeat(this AppDbContext db, HeatModel model)
@@ -85,6 +104,42 @@ namespace EventSignup.Web.Models.Extensions
             db.Heats.Remove(heat);
             await db.SaveChangesAsync();
         }
+
+        //public static Task<IEnumerable<PersonHeatModel>> CalculateRemainingHeats(this AppDbContext db)
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        var model = db.PeopleHeats
+        //            .Include(x => x.Heat)
+        //            .Select(x => new PersonHeatModel
+        //            {
+        //                id = x.Id,
+        //                heat = new HeatModel
+        //                {
+        //                    id = x.HeatId,
+        //                    slots = x.Heat.Slots,                            
+        //                }
+        //            }).AsEnumerable();                
+        //        return model;
+        //    });
+        //}
+
+        //public static Task<IEnumerable<HeatModel>> HeatCount(this AppDbContext db)
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        var model = db.Heats
+        //        .Include(x => x.PeopleHeats)
+        //        .Select(x => new HeatModel
+        //        {
+        //            slots = x.Slots,
+        //            available = x.Slots - x.PeopleHeats.Count
+        //        }).AsEnumerable();
+                
+        //        return model;
+
+        //    });
+        //}
 
         public static async Task DeleteDependencies(this Heat heat, AppDbContext db)
         {

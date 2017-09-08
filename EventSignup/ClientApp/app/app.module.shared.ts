@@ -27,6 +27,7 @@ import { HeatsComponent } from './components/heat/heats.component';
 import { HeatsListComponent } from './components/heat/heats-list.component';
 import { HeatEditComponent } from './components/heat/heat-edit.component';
 import { HeatAddComponent } from './components/heat/heat-add.component';
+import { HeatAvailibilityComponent } from './components/heat/heat-availibility.component';
 
 import { PersonService } from './services/person.service';
 import { PeopleListComponent } from './components/person/person-list.component';
@@ -54,6 +55,7 @@ export const sharedConfig: NgModule = {
         HeatsListComponent,
         HeatEditComponent,
         HeatAddComponent,
+        HeatAvailibilityComponent,
         PeopleListComponent,
         PersonAddComponent,
         PersonHeatAddComponent,
@@ -95,7 +97,8 @@ export const sharedConfig: NgModule = {
                 ]
             },
             { path: 'person-add', component: PersonAddComponent },
-            { path: 'register-email', component: RegisterEmailComponent },
+            { path: 'heat-availibility', component: HeatAvailibilityComponent },
+            { path: 'register-email/:id', component: RegisterEmailComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

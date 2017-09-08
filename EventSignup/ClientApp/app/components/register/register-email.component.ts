@@ -1,5 +1,5 @@
 ﻿import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -17,8 +17,6 @@ import { AddPersonHeatEmailDialogComponent } from '../dialog/add-personheat-emai
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-
-
 @Component({
     selector: 'register-person',
     templateUrl: 'register-email.component.html',
@@ -26,77 +24,46 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9
 })
 export class RegisterEmailComponent {
     isRegistered = false;
+
     emailFormControl = new FormControl('', [
         Validators.required,
         Validators.pattern(EMAIL_REGEX)]);
-    personHeat = new PersonHeat();
-    personCheck = new BehaviorSubject<Person>(new Person());
-    person = new Person();
-    heat = new Heat();
-    heats: Array<Heat> = new Array<Heat>();
-    people: Array<Person> = new Array<Person>();
+
     @ViewChild('filter') filter: ElementRef;
+
     scales = [
         'RX',
         'SCALED'
-        ]
+    ];
 
-    private selectedId: number;
-
-
-    constructor(
-        private personService: PersonService,
-        private heatService: HeatService,
-        private dialog: MdDialog,
-        private router: Router) {
-        this.heatService.getHeats();
-        personService.people.subscribe(people => {
-            this.people = people;
-        });
-        personService.personHeat.subscribe(person => {
-            this.personHeat = person;
-        });
-        heatService.heats.subscribe(heats => {
-            this.heats = heats;
-        });
-
-    }
+    constructor(private personService: PersonService,
+                private heatService: HeatService,
+                private dialog: MdDialog,
+                private router: Router,
+                private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.personService.getAllPeople();
+        this.route.paramMap.subscribe(params => {
+            const check = params.get('id');
+            if (check) {
+                this.heatService.getHeat(Number.parseInt(check)).subscribe(heat => {
+                    this.personService.personHeat.value.heat = heat;
+                });
+            }
+        });
 
         Observable.fromEvent(this.filter.nativeElement, 'keyup')
             .debounceTime(150)
             .distinctUntilChanged()
             .subscribe(() => {
-                this.testSearch(this.filter.nativeElement.value);
+                this.emailSearch(this.filter.nativeElement.value);
             });
     }
 
-    isSelected(person: Person) {
-        return person.id === this.selectedId;
-    }
-
-    addHeat(id) {
-        if (this.personCheck.value.id > 0) {
-
-            this.personService.personHeat.next(id);
-            const dialogRef = this.dialog.open(AddPersonHeatEmailDialogComponent)
-
-            //this.router.navigate(['/admin/', this.personCheck.value.id]);
-        }
-    }
-
-    addPersonHeat() {
-        this.personService.personHeat.value.person = new Person();
-        this.personService.personHeat.value.person.id = this.personCheck.value.id;
-        this.personService.addPersonHeat();
-    }
-
-    testSearch(email: string) {
+    emailSearch(email: string) {
         this.personService.findPerson(email).subscribe(person => {
             this.isRegistered = person.id > 0 ? true : false;
-            this.personCheck.next(person);
+            this.personService.personHeat.value.person = person;
         });
     }
 }

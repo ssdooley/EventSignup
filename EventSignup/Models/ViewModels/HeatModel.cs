@@ -15,6 +15,7 @@ namespace EventSignup.Web.Models.ViewModels
         public int hour { get; set; }
         public int minute { get; set; }
         public int slots { get; set; }
+        public int available { get; set; }
 
         public IEnumerable<PersonHeatModel> peopleHeats { get; set; }
     }

@@ -7,4 +7,9 @@ export class PersonHeat {
     rxEvent: string;
     heat: Heat;
     person: Person;
+
+    constructor() {
+        this.heat = new Heat();
+        this.person = new Person();
+    }
 }

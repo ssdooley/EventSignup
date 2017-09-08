@@ -23,6 +23,12 @@ namespace EventSignup.Web.Controllers
             return await db.GetHeats();
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<HeatModel> GetHeat([FromRoute]int id)
+        {
+            return await db.GetHeat(id);
+        }
+
         [HttpPost("[action]")]
         public async Task<ObjectResult> AddHeat([FromBody]HeatModel model)
         {

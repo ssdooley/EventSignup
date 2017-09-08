@@ -1,6 +1,6 @@
 ﻿<form>
     <md-input-container>
-        <input mdInput placeholder="Email" [formControl]="emailFormControl" [ngModel]="personHeat.person" #filter/>
+        <input mdInput placeholder="Email" type="email" [formControl]="emailFormControl" (ngModel)="personService.personHeat.value.person.email" #filter/>
     </md-input-container>
 </form>
 <button md-button *ngIf="!isRegistered">Register</button>
@@ -13,16 +13,13 @@
     <md-card class="styled-card">
         <md-card-content>
             <section>
-                <h1>{{personCheck.value.email}}</h1>
-                <md-select placeholder="Heat" [(ngModel)]="personHeat.heat">
-                    <md-option *ngFor="let heat of heats" [value]="heat">{{heat.name}}</md-option>
-                </md-select>
-                <md-select placeholder="Rx/Scaled" [(ngModel)]="personHeat.rxEvent">
+                <h1>{{personService.personHeat.value.person.email}}</h1>
+                <h3>Heat: {{personService.personHeat.value.heat.name}}</h3>
+                <md-select placeholder="Rx/Scaled" [(ngModel)]="personService.personHeat.value.rxEvent">
                     <md-option *ngFor="let scale of scales" [value]="scale">{{scale}}</md-option>
                 </md-select>
             </section>
-            <button class="styled-button" md-raised-button color="primary" (click)="addPersonHeat()">Assign Heat</button>
+            <button class="styled-button" md-raised-button color="primary" (click)="personService.addPersonHeat()">Assign Heat</button>
         </md-card-content>
     </md-card>
-
 </div>

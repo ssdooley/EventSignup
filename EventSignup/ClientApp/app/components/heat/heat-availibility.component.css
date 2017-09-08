@@ -1,0 +1,48 @@
+﻿.heat-list {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.heat-card p {
+    flex: 1 1 auto;
+}
+
+.person-heat-card {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.person-list {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 200px;
+}
+
+@media (max-width: 800px) {
+
+    .person-heat-card .hide-email {
+        display: none;
+    }
+
+    .person-heat-card .hide-gender {
+        display: none;
+    }
+
+    .person-heat-card .hide-scale {
+        display: none;
+    }
+
+    .person-list {
+        width: 200px;
+    }
+}

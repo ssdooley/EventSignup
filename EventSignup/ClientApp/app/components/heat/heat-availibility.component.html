@@ -1,0 +1,13 @@
+﻿<div class="heat-list">
+    <md-card *ngFor="let heat of heats" class="heat-card">
+        <h2 *ngIf="heat.available < 1">{{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}} - Heat is Full</h2>
+        <h2 *ngIf="heat.available > 0">{{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}} - {{heat.slots}} slots available</h2>
+        <md-card-header class="heat-list"></md-card-header>
+        <div class="person-list">
+            <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">
+                    <p>{{personHeat.person.lastName}}, {{personHeat.person.firstName}}</p>                    
+            </div>
+            <button [routerLink]="'/register-email/' + heat.id" md-raised-button color="primary" *ngIf="heat.available > 0" >Register</button>
+        </div>
+    </md-card>
+</div>
