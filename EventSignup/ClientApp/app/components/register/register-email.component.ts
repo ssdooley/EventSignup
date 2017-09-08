@@ -14,6 +14,7 @@ import { PersonHeat } from '../../models/person-heat.model';
 import { Heat } from '../../models/heat.model';
 import { HeatService } from '../../services/heat.service';
 import { AddPersonHeatEmailDialogComponent } from '../dialog/add-personheat-email-dialog.component';
+import { EditPersonDialogComponent } from '../dialog/edit-person-dialog.component';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -53,7 +54,7 @@ export class RegisterEmailComponent {
         });
 
         Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
+            .debounceTime(300)
             .distinctUntilChanged()
             .subscribe(() => {
                 this.emailSearch(this.filter.nativeElement.value);
@@ -64,6 +65,16 @@ export class RegisterEmailComponent {
         this.personService.findPerson(email).subscribe(person => {
             this.isRegistered = person.id > 0 ? true : false;
             this.personService.personHeat.value.person = person;
+        });
+    }
+
+    registerEmail(person: Person) {
+        this.personService.behaviorPerson.next(person);
+        const dialogRef = this.dialog.open(EditPersonDialogComponent)
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === '1') {
+                this.personService.getAllPeople();
+            }
         });
     }
 }

@@ -3,10 +3,12 @@
         <input mdInput placeholder="Email" type="email" [formControl]="emailFormControl" (ngModel)="personService.personHeat.value.person.email" #filter/>
     </md-input-container>
 </form>
-<button md-button *ngIf="!isRegistered">Register</button>
 <div *ngIf="!isRegistered">
     <h1 *ngIf="emailFormControl.hasError('required')">Please enter Your Email address </h1>
     <h1 *ngIf="emailFormControl.hasError('pattern')">Please enter a valid email address</h1>
+    <div *ngIf="!emailFormControl.hasError('required') && !emailFormControl.hasError('pattern')">
+    <button md-raised-button color="accent" *ngIf="!isRegistered" (click)="registerEmail()">Register</button>
+    </div>
 </div>
 <div *ngIf="isRegistered">
     <md-toolbar color="primary">Register for Heat</md-toolbar>
