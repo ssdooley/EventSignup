@@ -2,16 +2,48 @@
 <div class="heat-list">
     <md-card *ngFor="let heat of heats" class="heat-card">
         <md-card-header class="heat-list"></md-card-header>
-        <div class="person-list">
+        <h2>{{heat.name}} &nbsp; heat &nbsp;  {{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}}</h2>
+        <!--<div class="person-list">
             <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">
-                <p>{{heat.name}}</p>
                 <p>{{personHeat.person.lastName}}, {{personHeat.person.firstName}}</p>
                 <p class="hide-email">{{personHeat.person.email}}</p>
                 <p class="hide-gender">{{personHeat.person.sex}}</p>
                 <p class="hide-scale">{{personHeat.rxEvent}}</p>
+                <p class="hide-partner">{{personHeat.partnerName}}</p>
+                <p class="hide-partner">{{personHeat.partnerRxEvent}}</p>
+                <p class="hide-comments" *ngIf="personHeat.comments">{{personHeat.comments}}</p>
                 <button md-raised-button color="accent" (click)="onSelect(personHeat)">Edit</button>
-                <button md-raised-button color="warn" (click)="deletePersonHeat(personHeat.id)">Delete</button> 
+                <button md-raised-button color="warn" (click)="deletePersonHeat(personHeat.id)">Delete</button>
             </div>
-        </div>
+        </div>-->
+        <table>
+            <thead>
+                <tr>
+                    <th>Athlete</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Scale</th>
+                    <th>Partner</th>
+                    <th>Partner Gender</th>
+                    <th>Partner Scale</th>
+                    <th>Comments</th>
+                    <th colspan="2">Edit</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let personHeat of heat.peopleHeats">
+                <tr>
+                    <td> {{personHeat.person.lastName}}, {{personHeat.person.firstName}}</td>
+                    <td class="hide-email">{{personHeat.person.email}}</td>
+                    <td class="hide-gender">{{personHeat.person.sex}}</td>
+                    <td class="hide-scale">{{personHeat.rxEvent}}</td>
+                    <td class="hide-partner">{{personHeat.partnerName}}</td>
+                    <td class="hide-partner">{{personHeat.partnerSex}}</td>
+                    <td class="hide-partner">{{personHeat.partnerRxEvent}}</td>
+                    <td class="hide-comments">{{personHeat.comments}}</td>
+                    <button md-raised-button color="accent" (click)="onSelect(personHeat)">Edit</button>
+                    <button md-raised-button color="warn" (click)="deletePersonHeat(personHeat.id)">Delete</button>
+                </tr>
+            </tbody>
+        </table>
     </md-card>
 </div>

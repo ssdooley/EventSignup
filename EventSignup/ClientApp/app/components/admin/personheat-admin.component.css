@@ -25,7 +25,6 @@
     align-content: space-around;
     flex-wrap: wrap;
     justify-content: flex-start;
-    width: 750px;
 }
 
 @media (max-width: 800px)
@@ -43,4 +42,20 @@
     .person-list {
         width: 360px;
     }
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+table tbody:nth-child(even) {
+    background-color: #808080;
 }

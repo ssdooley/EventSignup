@@ -16,6 +16,7 @@ export class PersonHeatAddComponent {
     heats: Heat[] = new Array<Heat>();
     people: Person[] = new Array<Person>();
     scales = ['RX', 'SCALED'];
+    sexes = ['male', 'female'];
 
     constructor(private personService: PersonService, private heatService: HeatService) {
         heatService.heats.subscribe(heat => {

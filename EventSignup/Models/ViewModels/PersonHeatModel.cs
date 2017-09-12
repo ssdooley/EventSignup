@@ -9,7 +9,13 @@ namespace EventSignup.Web.Models.ViewModels
     {
         public int id { get; set; }
         public string rxEvent { get; set; }
+        public bool? partner { get; set; }
+        public string comments {get;set;}
+        public string partnerRxEvent { get; set; }
+        public string partnerName { get; set; }
+        public string partnerSex { get; set; }
+
         public PersonModel person { get; set; }
-        public HeatModel heat { get; set; }
+        public HeatModel heat { get; set; }        
     }
 }

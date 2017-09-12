@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MdPaginator, MdSort, MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,6 +10,7 @@ import { HeatService } from '../../services/heat.service';
 import { PersonService } from '../../services/person.service';
 import { PersonHeat } from '../../models/person-heat.model';
 import { Person } from '../../models/person.model';
+import { PeopleHeatsDataSource } from '../../datasources/people-heats.datasource';
 import { ConfirmDialogComponent } from '../dialog/confirm-dialog.component';
 import { EditPersonHeatDialogComponent } from '../dialog/edit-personheat-dialog.component';
 
@@ -22,8 +23,8 @@ export class PersonHeatAdminComponent implements OnInit {
     personHeat = new PersonHeat();
     heats: Array<Heat> = new Array<Heat>();
     people: Person[] = new Array<Person>();
+    displayedColumns = ['lastName', 'sex', 'email', 'rxEvent', 'partnerName', 'partnerSex', 'partnerRxEvent', 'comments']
     peopleHeats: Array<PersonHeat> = new Array<PersonHeat>();
-    displayedColumns = ['firstName', 'lastName', 'email', 'sex', 'rxEvent']
     scales = ['RX', 'SCALED'];
 
     private selectedId: number;

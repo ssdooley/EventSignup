@@ -5,22 +5,22 @@
         <md-card-content>
             <section>
                 <md-input-container class="mat-input-container">
-                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.firstName" placeholder="Name" />
+                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.firstName" placeholder="First Name" />
                 </md-input-container>
                 <md-input-container>
-                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.lastName" placeholder="Last" />
+                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.lastName" placeholder="Last Name" />
                 </md-input-container>
                 <md-input-container>
-                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.userName" placeholder="Last" />
+                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.userName" placeholder="User Name" />
                 </md-input-container>
                 <md-select placeholder="Gender" [(ngModel)]="personService.behaviorPerson.value.sex">
                     <md-option *ngFor="let sex of sexes" [value]="sex">{{sex}}</md-option>
                 </md-select>
                 <md-input-container>
-                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.email" placeholder="Last" />
+                    <input mdInput [(ngModel)]="personService.behaviorPerson.value.email" placeholder="Email" />
                 </md-input-container>
             </section>
-            <button md-raised-button md-dialog-close="1" color="primary" (click)="personService.editPerson()">Update Heat</button>
+            <button md-raised-button md-dialog-close="1" color="primary" (click)="personService.editPerson()">Update</button>
             <button md-raised-button md-dialog-close="0" color="warn">Cancel</button>
         </md-card-content>
     </md-card>

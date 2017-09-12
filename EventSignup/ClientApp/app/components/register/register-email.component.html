@@ -7,7 +7,7 @@
     <h1 *ngIf="emailFormControl.hasError('required')">Please enter Your Email address </h1>
     <h1 *ngIf="emailFormControl.hasError('pattern')">Please enter a valid email address</h1>
     <div *ngIf="!emailFormControl.hasError('required') && !emailFormControl.hasError('pattern')">
-    <button md-raised-button color="accent" *ngIf="!isRegistered" (click)="registerEmail()">Register</button>
+    <button md-raised-button color="accent" *ngIf="!isRegistered" (click)="registerEmail(personService.personHeat.value.person)">Register</button>
     </div>
 </div>
 <div *ngIf="isRegistered">
@@ -21,7 +21,7 @@
                     <md-option *ngFor="let scale of scales" [value]="scale">{{scale}}</md-option>
                 </md-select>
             </section>
-            <button class="styled-button" md-raised-button color="primary" (click)="personService.addPersonHeat()">Assign Heat</button>
+            <button class="styled-button" md-raised-button color="primary" (click)="personService.addPersonHeat(); return()">Assign Heat</button>
         </md-card-content>
     </md-card>
 </div>

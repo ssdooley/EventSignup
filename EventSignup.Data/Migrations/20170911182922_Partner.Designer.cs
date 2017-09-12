@@ -8,9 +8,10 @@ using EventSignup.Data;
 namespace EventSignup.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170911182922_Partner")]
+    partial class Partner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -68,8 +69,6 @@ namespace EventSignup.Data.Migrations
                     b.Property<string>("PartnerName");
 
                     b.Property<string>("PartnerRxEvent");
-
-                    b.Property<string>("PartnerSex");
 
                     b.Property<int>("PersonId");
 

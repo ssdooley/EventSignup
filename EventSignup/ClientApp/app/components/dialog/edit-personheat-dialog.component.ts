@@ -16,6 +16,7 @@ export class EditPersonHeatDialogComponent {
     people: Person[] = new Array<Person>();
     person: Person = new Person();
     scales = ['RX', 'SCALED'];
+    sexes = ['male', 'female'];
 
     constructor(
         private personService: PersonService,

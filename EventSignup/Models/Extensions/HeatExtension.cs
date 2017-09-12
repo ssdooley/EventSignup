@@ -27,6 +27,11 @@ namespace EventSignup.Web.Models.Extensions
                     {
                         id = y.Id,
                         rxEvent = y.RxEvent,
+                        comments = y.Comments,
+                        partner = y.Partner,
+                        partnerName = y.PartnerName,
+                        partnerRxEvent = y.PartnerRxEvent,
+                        partnerSex = y.PartnerSex,
                         person = new PersonModel
                         {
                             id = y.PersonId,
@@ -104,43 +109,7 @@ namespace EventSignup.Web.Models.Extensions
             db.Heats.Remove(heat);
             await db.SaveChangesAsync();
         }
-
-        //public static Task<IEnumerable<PersonHeatModel>> CalculateRemainingHeats(this AppDbContext db)
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        var model = db.PeopleHeats
-        //            .Include(x => x.Heat)
-        //            .Select(x => new PersonHeatModel
-        //            {
-        //                id = x.Id,
-        //                heat = new HeatModel
-        //                {
-        //                    id = x.HeatId,
-        //                    slots = x.Heat.Slots,                            
-        //                }
-        //            }).AsEnumerable();                
-        //        return model;
-        //    });
-        //}
-
-        //public static Task<IEnumerable<HeatModel>> HeatCount(this AppDbContext db)
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        var model = db.Heats
-        //        .Include(x => x.PeopleHeats)
-        //        .Select(x => new HeatModel
-        //        {
-        //            slots = x.Slots,
-        //            available = x.Slots - x.PeopleHeats.Count
-        //        }).AsEnumerable();
-                
-        //        return model;
-
-        //    });
-        //}
-
+        
         public static async Task DeleteDependencies(this Heat heat, AppDbContext db)
         {
             var peopleHeats = db.PeopleHeats.Where(x => x.HeatId == heat.Id);

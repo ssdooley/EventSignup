@@ -16,8 +16,12 @@ import { CoreApiService } from './core-api.service';
 @Injectable()
 export class PersonService {
     peopleSubject: BehaviorSubject<Person[]> = new BehaviorSubject<Array<Person>>([]);
+    peopleHeatsSubject: BehaviorSubject<PersonHeat[]> = new BehaviorSubject<Array<PersonHeat>>([]);
     get personData(): Person[] {
         return this.peopleSubject.value;
+    }
+    get personHeatData(): PersonHeat[] {
+        return this.peopleHeatsSubject.value;
     }
 
     constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService, private heatService: HeatService) { }
@@ -54,24 +58,27 @@ export class PersonService {
             });
     }
 
-    addPerson(model: Person) {
+    addPerson(model: Person): Observable<Response> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         let body = JSON.stringify(model);
 
         if (this.validatePerson(model)) {
-            this.http.post('api/Person/AddPerson', body, options)
+            return this.http.post('api/Person/AddPerson', body, options)
                 .map(res => {
                     return res;
-                }).catch(this.handleError)
-                .subscribe(res => {
-                    this.toaster.sendSuccessMessage(`${model.userName} successfully added`);
-                    this.getAllPeople();
-                },
-                error => {
-                    this.toaster.sendErrorMessage(error);
-                });
+                }).catch(this.handleError);
         }
+    }
+
+    addSuccessful(model: Person) {
+        this.toaster.sendSuccessMessage(`${model.userName} successfully added`);
+        this.behaviorPerson.next(model);
+        this.getAllPeople();
+    }
+
+    addFailed(error) {
+        this.toaster.sendErrorMessage(error);
     }
 
     findPerson(email: string): Observable<Person> {
@@ -177,6 +184,22 @@ export class PersonService {
 
         if (!person.lastName) {
             this.toaster.sendErrorMessage('Last Name must have a value');
+            return false;
+        }
+
+        if (!person.sex) {
+            this.toaster.sendErrorMessage('Please select a Gender for this event');
+            return false;
+        }
+
+        if (!person.email) {
+            this.toaster.sendErrorMessage('Please enter a valid email address');
+            return false;
+        }
+
+        if (!person.userName) {
+            person.userName = person.firstName + "." + person.lastName
+            this.toaster.sendErrorMessage('We have assigned a User Name for you');
             return false;
         }
 

@@ -28,6 +28,11 @@ namespace EventSignup.Web.Models.Extensions
                     {
                         id = y.Id,
                         rxEvent = y.RxEvent,
+                        comments = y.Comments,
+                        partner = y.Partner,
+                        partnerRxEvent = y.PartnerRxEvent,
+                        partnerSex = y.PartnerSex,
+                        partnerName = y.PartnerName,
                         heat = new HeatModel
                         {
                             id = y.HeatId,
@@ -90,6 +95,12 @@ namespace EventSignup.Web.Models.Extensions
                     .Select(x => new PersonHeatModel
                     {
                         id = x.Id,
+                        comments = x.Comments,
+                        partner = x.Partner,
+                        partnerName = x.PartnerName,
+                        partnerRxEvent = x.PartnerName,
+                        rxEvent = x.RxEvent,
+                        partnerSex = x.PartnerSex,
                         heat = new HeatModel
                         {
                             id = x.HeatId,
@@ -141,6 +152,11 @@ namespace EventSignup.Web.Models.Extensions
             {
                 id = personHeat.Id,
                 rxEvent = personHeat.RxEvent,
+                comments = personHeat.Comments,
+                partner = personHeat.Partner,
+                partnerRxEvent = personHeat.PartnerRxEvent,
+                partnerName = personHeat.PartnerName,
+                partnerSex = personHeat.PartnerSex,
                 heat = new HeatModel
                 {
                     id = personHeat.Heat.Id,
@@ -174,6 +190,26 @@ namespace EventSignup.Web.Models.Extensions
                     Sex = model.sex,
                     UserName = model.userName,
                     Password = model.password,
+                    Email = model.email
+
+                };
+
+                await db.People.AddAsync(person);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public static async Task AddPartner(this AppDbContext db, PersonModel model)
+        {
+            if (await model.Validate(db))
+            {
+                var person = new Person
+                {
+                    Id = model.id,
+                    FirstName = model.firstName,
+                    LastName = model.lastName,
+                    Sex = model.sex,
+                    UserName = model.userName,
                     Email = model.email
 
                 };
@@ -227,7 +263,12 @@ namespace EventSignup.Web.Models.Extensions
                 {
                     PersonId = model.person.id,
                     HeatId = model.heat.id,
-                    RxEvent = model.rxEvent
+                    RxEvent = model.rxEvent,
+                    Comments = model.comments,
+                    Partner = model.partner,
+                    PartnerName = model.partnerName,
+                    PartnerRxEvent = model.partnerRxEvent,
+                    PartnerSex = model.partnerSex
                 };
 
                 await db.PeopleHeats.AddAsync(personHeat);
@@ -242,6 +283,11 @@ namespace EventSignup.Web.Models.Extensions
                 var personHeat = await db.PeopleHeats.FindAsync(model.id);
                 personHeat.RxEvent = model.rxEvent;
                 personHeat.HeatId = model.heat.id;
+                personHeat.Comments = model.comments;
+                personHeat.Partner = model.partner;
+                personHeat.PartnerRxEvent = model.partnerRxEvent;
+                personHeat.PartnerName = model.partnerName;
+                personHeat.PartnerSex = model.partnerSex;
                 await db.SaveChangesAsync();
             }
         }
@@ -320,6 +366,26 @@ namespace EventSignup.Web.Models.Extensions
                 {
                     throw new Exception("Must select a different Person to be assigned to Heat");
                 }
+            }
+
+            if (model.partner == null)
+            {
+                throw new Exception("Do you have a partner?");
+            }
+
+            if (model.partner == true && model.partnerName == null)
+            {
+                throw new Exception("Please enter the first and last name for your partner");
+            }
+
+            if (model.partner == true && model.partnerRxEvent == null)
+            {
+                throw new Exception("Please select at what level/scale your partner will performing");
+            }
+
+            if (model.partner == true && model.partnerSex == null)
+            {
+                throw new Exception("Please select the appropriate gender for your partner");
             }
 
             return true;

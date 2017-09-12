@@ -14,7 +14,7 @@ import { PersonHeat } from '../../models/person-heat.model';
 import { Heat } from '../../models/heat.model';
 import { HeatService } from '../../services/heat.service';
 import { AddPersonHeatEmailDialogComponent } from '../dialog/add-personheat-email-dialog.component';
-import { EditPersonDialogComponent } from '../dialog/edit-person-dialog.component';
+import { AddPersonDialogComponent } from '../dialog/add-person-dialog.component';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -38,10 +38,10 @@ export class RegisterEmailComponent {
     ];
 
     constructor(private personService: PersonService,
-                private heatService: HeatService,
-                private dialog: MdDialog,
-                private router: Router,
-                private route: ActivatedRoute) {}
+        private heatService: HeatService,
+        private dialog: MdDialog,
+        private router: Router,
+        private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.route.paramMap.subscribe(params => {
@@ -53,8 +53,8 @@ export class RegisterEmailComponent {
             }
         });
 
-        Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(300)
+        Observable.fromEvent(this.filter.nativeElement, 'keyup' || 'change')
+            .debounceTime(100)
             .distinctUntilChanged()
             .subscribe(() => {
                 this.emailSearch(this.filter.nativeElement.value);
@@ -70,11 +70,15 @@ export class RegisterEmailComponent {
 
     registerEmail(person: Person) {
         this.personService.behaviorPerson.next(person);
-        const dialogRef = this.dialog.open(EditPersonDialogComponent)
+        const dialogRef = this.dialog.open(AddPersonDialogComponent);
+        this.filter.nativeElement.value = '';
         dialogRef.afterClosed().subscribe(result => {
-            if (result === '1') {
-                this.personService.getAllPeople();
-            }
+            this.filter.nativeElement.value = this.personService.behaviorPerson.value.email;
+            this.emailSearch(this.filter.nativeElement.value);
         });
+    }
+
+    return() {
+        this.router.navigate(['/heat-availibility']);
     }
 }

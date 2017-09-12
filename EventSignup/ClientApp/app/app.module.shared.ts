@@ -13,6 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PrismComponent } from './components/prism/prism.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog.component';
 import { EditPersonDialogComponent } from './components/dialog/edit-person-dialog.component';
+import { AddPersonDialogComponent } from './components/dialog/add-person-dialog.component';
 import { EditPersonHeatDialogComponent } from './components/dialog/edit-personheat-dialog.component';
 import { AddPersonHeatEmailDialogComponent } from './components/dialog/add-personheat-email-dialog.component';
 
@@ -49,6 +50,7 @@ export const sharedConfig: NgModule = {
         PersonHeatAdminComponent,
         ConfirmDialogComponent,
         EditPersonDialogComponent,
+        AddPersonDialogComponent,
         EditPersonHeatDialogComponent,
         AddPersonHeatEmailDialogComponent,
         HeatsComponent,
@@ -66,6 +68,7 @@ export const sharedConfig: NgModule = {
     entryComponents: [
         ConfirmDialogComponent,
         EditPersonHeatDialogComponent,
+        AddPersonDialogComponent,
         AddPersonHeatEmailDialogComponent
     ],
     providers: [
