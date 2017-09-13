@@ -1,7 +1,7 @@
 ﻿<div class="heat-list">
     <md-card *ngFor="let heat of heats" class="heat-card">
         <h2 *ngIf="heat.available < 1">{{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}} - Heat is Full</h2>
-        <h2 *ngIf="heat.available > 0">{{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}} - {{heat.slots}} slots available</h2>
+        <h2 *ngIf="heat.available > 0">{{heat.hour | number: '2.0-0'}}:{{heat.minute | number: '2.0-0'}} - {{heat.available}} slots available</h2>
         <md-card-header class="heat-list"></md-card-header>
         <div class="person-list">
             <div *ngFor="let personHeat of heat.peopleHeats" class="person-heat-card">

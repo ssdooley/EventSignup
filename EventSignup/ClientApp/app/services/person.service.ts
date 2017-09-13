@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -24,7 +25,7 @@ export class PersonService {
         return this.peopleHeatsSubject.value;
     }
 
-    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService, private heatService: HeatService) { }
+    constructor(private http: Http, private toaster: ToasterService, private coreApi: CoreApiService, private heatService: HeatService, private router: Router) { }
 
     private personSubject = new Subject<Person>();
     private newPersonSubject = new Subject<Person>();
@@ -145,6 +146,23 @@ export class PersonService {
             });
     }
 
+    addAthletePersonHeat() {
+        let body = JSON.stringify(this.personHeat.value);
+
+        return this.http.post('api/Person/AddPersonHeat', body, this.coreApi.getRequestOptions())
+            .map(this.coreApi.extractData)
+            .catch(this.coreApi.handleError)
+            .subscribe(res => {
+                this.toaster.sendSuccessMessage(`${this.personHeat.value.person.email} was successfully added to the ${this.personHeat.value.heat.name} heat`);
+                this.personHeat.next(new PersonHeat());
+                this.heatService.getHeats();
+                this.router.navigate(['/heat-availibility']);
+            },
+            error => {
+                this.toaster.sendErrorMessage(error);
+            });
+    }
+
     editPersonHeat() {
         let body = JSON.stringify(this.personHeat.value);
 
@@ -199,7 +217,7 @@ export class PersonService {
 
         if (!person.userName) {
             person.userName = person.firstName + "." + person.lastName
-            this.toaster.sendErrorMessage('We have assigned a User Name for you');
+            this.toaster.sendSuccessMessage('We have assigned a User Name for you. Please click Register to continue!');
             return false;
         }
 

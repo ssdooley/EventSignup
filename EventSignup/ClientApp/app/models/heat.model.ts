@@ -8,5 +8,6 @@ export class Heat {
     hour: number;
     minute: number;
     slots: number;
+    available: number;
     peopleHeats: Array<PersonHeat>;
 }

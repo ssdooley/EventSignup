@@ -24,6 +24,7 @@ export class PersonAddComponent {
         this.personService.addPerson(this.person).subscribe(
             res => {
                 this.personService.addSuccessful(this.person);
+                this.person = new Person;               
             },
             error => {
                 this.personService.addFailed(error);

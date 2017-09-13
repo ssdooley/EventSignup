@@ -32,10 +32,8 @@ export class RegisterEmailComponent {
 
     @ViewChild('filter') filter: ElementRef;
 
-    scales = [
-        'RX',
-        'SCALED'
-    ];
+    scales = ['RX', 'SCALED'];
+    sexes = ['male', 'female'];
 
     constructor(private personService: PersonService,
         private heatService: HeatService,
@@ -76,9 +74,5 @@ export class RegisterEmailComponent {
             this.filter.nativeElement.value = this.personService.behaviorPerson.value.email;
             this.emailSearch(this.filter.nativeElement.value);
         });
-    }
-
-    return() {
-        this.router.navigate(['/heat-availibility']);
-    }
+    }    
 }

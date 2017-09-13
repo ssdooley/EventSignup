@@ -15,6 +15,8 @@ export class HeatAvailibilityComponent {
     heats: Array<Heat> = new Array<Heat>();
     people: Array<Person> = new Array<Person>();
     personHeat = new PersonHeat;
+    available: number;
+    
 
     constructor(
         private personService: PersonService,
